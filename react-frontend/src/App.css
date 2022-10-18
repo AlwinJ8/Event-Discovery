@@ -26,19 +26,20 @@
 
 .Start-button {
   display:inline-block;
-  padding:0.46em 1.6em;
-  border:0.1em solid #003057;
+  padding:2em 5.5em;
+  border:0.14em solid #003057;
   margin:0 0.2em 0.2em 0;
-  border-radius:0.12em;
+  border-radius:0.32em;
   box-sizing: border-box;
   text-decoration:none;
   font-family:'Roboto',sans-serif;
-  font-weight:300;
+  font-weight:475;
   color:#003057;
   text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
   background-color:#B3A369;
   text-align:center;
   transition: all 0.15s;
+  cursor: pointer;
 }
 
 .Start-button:hover{

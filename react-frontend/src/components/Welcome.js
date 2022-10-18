@@ -4,8 +4,8 @@ import logo from '../images/GT_logo.png';
 
 class Welcome extends React.Component {
     buttonClick = () => {
-        const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        window.open(url)
+      const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+      window.open(url)
     };
 
     render() {
@@ -16,12 +16,12 @@ class Welcome extends React.Component {
               <p>
                 Welcome to Campus Discovery! 
               </p>
-              <a
-                href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+              <button
                 className='Start-button'
+                onClick={this.buttonClick}
               >
                 Login
-              </a> 
+              </button> 
             </header>
           </div>
         );
