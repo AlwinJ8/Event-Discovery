@@ -14,14 +14,14 @@ class Welcome extends React.Component {
             <header className="App-header">
               <img src={logo} className="GT-logo" alt="GT logo"  />
               <p>
-                Welcome to Campus Discovery! 
+                Welcome to Campus Discovery!
               </p>
               <button
                 className='Start-button'
                 onClick={this.buttonClick}
               >
                 Login
-              </button> 
+              </button>
             </header>
           </div>
         );
