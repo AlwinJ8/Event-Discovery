@@ -4,7 +4,7 @@ import logo from '../images/GT_logo.png';
 
 class Welcome extends React.Component {
     buttonClick = () => {
-      const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+      const url = 'http://localhost:3000/#/config'
       window.open(url)
     };
 
