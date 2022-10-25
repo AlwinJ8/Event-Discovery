@@ -1,0 +1,41 @@
+.event {
+    background-color: #282B30;
+    min-height: 200px;
+    max-width: 400px;
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.icons:hover {
+    cursor: pointer;
+}
+
+.topPart{
+    display:flex;
+    flex-direction: column;
+}
+
+.eventHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0px;
+}
+
+.hh {
+    margin-top:0;
+    margin-bottom: 5px;
+}
+.eventFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icons {
+    padding-right: 5px;
+}
