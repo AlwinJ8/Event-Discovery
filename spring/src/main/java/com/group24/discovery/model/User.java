@@ -1,21 +1,28 @@
 package com.group24.discovery.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="users")
 public class User {
-    private long id;
-    private String name;
-    private String email;
 
-    public String getEmail() {
-        return email;
+    @Id
+    @Column(name = "userid")
+    private long id;
+
+    @Column(name = "fullname")
+    private String name;
+
+    public User() {
+        
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public User(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public void setID(long id) {
