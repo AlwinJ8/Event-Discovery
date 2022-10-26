@@ -1,14 +1,16 @@
 import React from 'react';
 import '../App.css';
 import logo from '../images/GT_logo.png';
+import {useNavigate} from "react-router-dom"
+  
+  
+function Welcome () {
+    const navigate = useNavigate();
 
-class Welcome extends React.Component {
-    buttonClick = () => {
-      const url = 'http://localhost:3000/#/config'
+    /*const buttonClick = () => {
+      const url = 'http://localhost:3000/#/newuser'
       window.open(url)
-    };
-
-    render() {
+    };*/
         return (
           <div className="App">
             <header className="App-header">
@@ -18,14 +20,13 @@ class Welcome extends React.Component {
               </p>
               <button
                 className='Start-button'
-                onClick={this.buttonClick}
+                onClick={()=>navigate("/newuser")}
               >
                 Login
               </button>
             </header>
           </div>
         );
-    }
 }
 
 export default Welcome
