@@ -18,7 +18,7 @@ class InitialConfig extends React.Component {
       }
     
       handleSubmit(event) {
-        if (this.state.userName == '' || this.state.userName == null || /\s/.test(this.state.userName)) {
+        if (this.state.userName == '' || this.state.userName == null || !/\S/.test(this.state.userName)) {
             alert("Please enter a name")
         } else {
             const url = 'http://localhost:3000/#/dashboard'
