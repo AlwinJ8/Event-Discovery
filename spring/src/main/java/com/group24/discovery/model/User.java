@@ -53,6 +53,13 @@ public class User {
         this.eventsAttending = new HashSet<>();
     }
 
+    public User(String name, String type) {
+        this.name = name;
+        this.type = type;
+        this.hostedEvents = new ArrayList<Event>();
+        this.eventsAttending = new HashSet<>();
+    }
+
     public void setID(long id) {
         this.id = id;
     }

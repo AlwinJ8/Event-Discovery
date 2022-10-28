@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "events")
 public class Event {
@@ -39,9 +41,11 @@ public class Event {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hostid")
+    @JsonIgnore
     private User host;
 
     @ManyToMany(mappedBy = "eventsAttending", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private Set<User> usersAttending;
 
     public Event() {
@@ -54,6 +58,15 @@ public class Event {
         this.location = location;
         this.date = date;
         this.host = host;
+        this.description = description;
+        this.usersAttending = new HashSet<>();
+    }
+
+    public Event(String name, String location, String date, String description) {
+        super();
+        this.name = name;
+        this.location = location;
+        this.date = date;
         this.description = description;
         this.usersAttending = new HashSet<>();
     }

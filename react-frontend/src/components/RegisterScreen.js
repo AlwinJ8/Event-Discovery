@@ -22,7 +22,7 @@ function RegisterScreen() {
 
   useEffect( () => {
     fetchData();
-  })
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault();
