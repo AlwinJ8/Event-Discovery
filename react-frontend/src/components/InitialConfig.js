@@ -30,7 +30,7 @@ function InitialConfig()  {
           <header className="App-header">
             <img src={Logo} className="GT-logo" alt="GT logo"  />
             <p>
-              Welcome to Campus Discovery!
+              Please Make an Account!
             </p>
             <form onSubmit={handleSubmit}>
           <label>

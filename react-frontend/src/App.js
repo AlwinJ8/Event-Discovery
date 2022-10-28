@@ -11,7 +11,7 @@ function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/config" element={<InitialConfig />} />
-          <Route path="/newuser" element={<RegisterScreen />} />
+          <Route path="/login" element={<RegisterScreen />} />
         </Routes>
       </Router>
   );

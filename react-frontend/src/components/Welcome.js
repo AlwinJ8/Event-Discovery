@@ -16,7 +16,7 @@ function Welcome () {
               </p>
               <button
                 className='Start-button'
-                onClick={()=>navigate("/newuser")}
+                onClick={()=>navigate("/login")}
               >
                 Login
               </button>
