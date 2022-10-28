@@ -1,21 +1,21 @@
-import React, { useState}  from 'react';
+import React, {useState}  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
+import {useNavigate} from "react-router-dom"
 
 
-function RegisterScreen()  {
-      //this.state = {personType: 'Student', userName: ''};
+function RegisterScreen() {
+      const navigate = useNavigate();
       const [gtID, setgtID] = useState("");
       const handleIDChange = (event) => {
         setgtID(event.target.value);
       };
 
       const handleSubmit = (event) => {
-        if (gtID == '') {
-            alert("Please enter a name")
+        if (gtID == '' || gtID.length != 9 || isNaN(+gtID)) {
+            alert("Please enter a valid GTID")
         } else {
-            const url = 'http://localhost:3000/#/config'
-            window.open(url)
+            navigate("/config")
         }
         event.preventDefault();
       }
@@ -37,7 +37,6 @@ function RegisterScreen()  {
         </form>
           </header>
         </div>
-          
         );
       }
 

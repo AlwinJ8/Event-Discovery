@@ -6,15 +6,11 @@ import {useNavigate} from "react-router-dom"
   
 function Welcome () {
     const navigate = useNavigate();
-
-    /*const buttonClick = () => {
-      const url = 'http://localhost:3000/#/newuser'
-      window.open(url)
-    };*/
+    
         return (
           <div className="App">
             <header className="App-header">
-              <img src={logo} className="GT-logo" alt="GT logo"  />
+              <img src={logo} className="GT-logo" alt="GT logo"/>
               <p>
                 Welcome to Campus Discovery!
               </p>

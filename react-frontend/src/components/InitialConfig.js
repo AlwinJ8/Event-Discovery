@@ -1,11 +1,12 @@
-import React, { useState}  from 'react';
+import React, {useState}  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
+import {useNavigate} from "react-router-dom"
 
 
 function InitialConfig()  {
-      //this.state = {personType: 'Student', userName: ''};
-      const [personType, setPersonType] = useState("Student");
+      const navigate = useNavigate();
+      const [personType, setPersonType] = useState();
       const handleTypeChange = (event) => {
         setPersonType(event.target.value);
       };
@@ -19,8 +20,7 @@ function InitialConfig()  {
         if (userName == '') {
             alert("Please enter a name")
         } else {
-            const url = 'http://localhost:3000/#/dashboard'
-            window.open(url)
+            navigate("/dashboard")
         }
         event.preventDefault();
       }
@@ -37,8 +37,8 @@ function InitialConfig()  {
             You are a: 
               <select value = {personType} name = 'personType' onChange={handleTypeChange}>
                   <option personType="Student">Student</option>
+                  <option personType="Admin">Admin</option>
                   <option personType="Teacher">Teacher</option>
-                  <option personType="Organizer">Organizer</option>
               </select>
           </label>    
           <br />
