@@ -1,8 +1,19 @@
 package com.group24.discovery.model;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -10,6 +21,8 @@ import javax.persistence.Table;
 public class Event {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "eventid")
     private long id;
 
     @Column(name = "eventname")
@@ -21,7 +34,29 @@ public class Event {
     @Column(name = "eventdate")
     private String date;
 
+    @Column(name = "descript")
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hostid")
     private User host;
+
+    @ManyToMany(mappedBy = "eventsAttending", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<User> usersAttending;
+
+    public Event() {
+
+    }
+
+    public Event(String name, String location, String date, User host, String description) {
+        super();
+        this.name = name;
+        this.location = location;
+        this.date = date;
+        this.host = host;
+        this.description = description;
+        this.usersAttending = new HashSet<>();
+    }
 
     public long getId() {
         return id;
@@ -52,5 +87,35 @@ public class Event {
     }
     public void setHost(User host) {
         this.host = host;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public Set<User> getUsersAttending() {
+        return usersAttending;
+    }
+    public void setUsersAttending(Set<User> usersAttending) {
+        this.usersAttending = usersAttending;
+    }
+    
+
+    public void addAttendingUser(User user) {
+        this.usersAttending.add(user);
+        user.getEventsAttending().add(this);
+    }
+
+    public void removeAttendingUser(User user) {
+        if (user != null) {
+            this.usersAttending.remove(user);
+            user.getEventsAttending().remove(this);
+        }
+    }
+
+    // Tester toString for events
+    public String toString() {
+        return this.name + " " + this.id;
     }
 }
