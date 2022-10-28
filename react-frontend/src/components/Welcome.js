@@ -1,31 +1,28 @@
 import React from 'react';
 import '../App.css';
 import logo from '../images/GT_logo.png';
-
-class Welcome extends React.Component {
-    buttonClick = () => {
-      const url = 'http://localhost:3000/#/config'
-      window.open(url)
-    };
-
-    render() {
+import {useNavigate} from "react-router-dom"
+  
+  
+function Welcome () {
+    const navigate = useNavigate();
+    
         return (
           <div className="App">
             <header className="App-header">
-              <img src={logo} className="GT-logo" alt="GT logo"  />
+              <img src={logo} className="GT-logo" alt="GT logo"/>
               <p>
                 Welcome to Campus Discovery!
               </p>
               <button
                 className='Start-button'
-                onClick={this.buttonClick}
+                onClick={()=>navigate("/newuser")}
               >
                 Login
               </button>
             </header>
           </div>
         );
-    }
 }
 
 export default Welcome

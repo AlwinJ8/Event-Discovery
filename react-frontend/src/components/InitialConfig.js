@@ -1,61 +1,58 @@
-import React, { useState}  from 'react';
+import React, {useState}  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
+import {useNavigate} from "react-router-dom"
 
 
-class InitialConfig extends React.Component {
+function InitialConfig()  {
+      const navigate = useNavigate();
+      const [personType, setPersonType] = useState();
+      const handleTypeChange = (event) => {
+        setPersonType(event.target.value);
+      };
 
-    constructor(props) {
-        super(props);
-        this.state = {personType: 'Student', userName: ''};
-    
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
-    
-      handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
-      }
-    
-      handleSubmit(event) {
-        if (this.state.userName == '') {
+      const [userName, setUserName] = useState("");
+      const handleUserChange = (event) => {
+        setUserName(event.target.value);
+      };
+
+      const handleSubmit = (event) => {
+        if (userName == '') {
             alert("Please enter a name")
         } else {
-            const url = 'http://localhost:3000/#/dashboard'
-            window.open(url)
+            navigate("/dashboard")
         }
         event.preventDefault();
       }
     
-      render() {
-        return (
-            <div className="App">
-            <header className="App-header">
-              <img src={Logo} className="GT-logo" alt="GT logo"  />
-              <p>
-                Welcome to Campus Discovery!
-              </p>
-              <form onSubmit={this.handleSubmit}>
-            <label>
-              You are a: 
-                <select personType={this.state.personType} name = 'personType' onChange={this.handleChange}>
-                    <option personType="Student">Student</option>
-                    <option personType="Teacher">Teacher</option>
-                    <option personType="Organizer">Organizer</option>
-                </select>
-            </label>    
-            <br />
-            <label>
-                Full Name:
-                <textarea userName={this.state.userName} name = 'userName' onChange={this.handleChange} />
-            </label>
-            <br />
-            <input type = "submit" value = "Submit" />
-          </form>
-            </header>
-          </div>
+      return (
+          <div className="App">
+          <header className="App-header">
+            <img src={Logo} className="GT-logo" alt="GT logo"  />
+            <p>
+              Welcome to Campus Discovery!
+            </p>
+            <form onSubmit={handleSubmit}>
+          <label>
+            You are a: 
+              <select value = {personType} name = 'personType' onChange={handleTypeChange}>
+                  <option personType="Student">Student</option>
+                  <option personType="Admin">Admin</option>
+                  <option personType="Teacher">Teacher</option>
+              </select>
+          </label>    
+          <br />
+          <label>
+              Full Name:
+              <textarea value={userName} name = 'userName' onChange={handleUserChange} />
+          </label>
+          <br />
+          <input type = "submit" value = "Submit" />
+        </form>
+          </header>
+        </div>
           
         );
       }
-    }
+
 export default InitialConfig
