@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +35,9 @@ public class UserController {
     @GetMapping("/validate")
     public ResponseEntity<Map<String, Boolean>> validateUser(@RequestParam long userID) {
         boolean exists = userRepository.existsByid(userID);
-        return new ResponseEntity<>(Collections.singletonMap("exists", exists), HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("CurrentID", String.valueOf(userID));
+        return new ResponseEntity<>(Collections.singletonMap("exists", exists), headers, HttpStatus.OK);
     }
 
     @GetMapping("/events")

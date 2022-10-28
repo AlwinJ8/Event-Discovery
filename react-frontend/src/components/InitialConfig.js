@@ -1,12 +1,15 @@
 import React, {useState}  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
-import {useNavigate} from "react-router-dom"
+import {Route, Router, useNavigate, useParams} from "react-router-dom"
+
 
 
 function InitialConfig()  {
+      const header = useParams()
+      console.log(header)
       const navigate = useNavigate();
-      const [personType, setPersonType] = useState();
+      const [persontype, setPersonType] = useState();
       const handleTypeChange = (event) => {
         setPersonType(event.target.value);
       };
@@ -35,10 +38,10 @@ function InitialConfig()  {
             <form onSubmit={handleSubmit}>
           <label>
             You are a: 
-              <select value = {personType} name = 'personType' onChange={handleTypeChange}>
-                  <option personType="Student">Student</option>
-                  <option personType="Admin">Admin</option>
-                  <option personType="Teacher">Teacher</option>
+              <select value = {persontype} name = 'persontype' onChange={handleTypeChange}>
+                  <option persontype="Student">Student</option>
+                  <option persontype="Admin">Admin</option>
+                  <option persontype="Teacher">Teacher</option>
               </select>
           </label>    
           <br />

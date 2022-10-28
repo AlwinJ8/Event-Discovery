@@ -8,34 +8,44 @@ import UserServices from '../services/UserServices';
 function RegisterScreen() {
   const navigate = useNavigate();
   const [gtID, setgtID] = useState("")
-  const [valid, setValid] = useState("")
+  const [header, setHeader] = useState("")
   const handleIDChange = (event) => {
     setgtID(event.target.value);
   };
   const didMount = useRef(false)
 
-  async function fetchData() {
-    UserServices.validateUser(gtID)
-      .then((response) => response.data)
-      .then((data) => setValid(data.exists))
-  }
 
-  useEffect( () => {
-    fetchData();
-  })
+  //async function fetchData() {
+    //UserServices.validateUser(gtID)
+      //.then((response) => response.data)
+      //.then((data) => setValid(data.exists))
+  //}
+
+  //useEffect( () => {
+    //fetchData();
+  //})
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (gtID == '' || gtID.length != 9 || isNaN(+gtID)) {
       alert("Please enter a valid GTID")
     } else {
-      fetchData();
-      if (valid) {
-        navigate("/dashboard")
+      UserServices.validateUser(gtID)
+      .then((response) => response.data)
+      .then((data) => { 
+      if (data.exists) {
+        UserServices.validateUser(gtID)
+        .then((response) => {
+           navigate("/dashboard", response.headers)
+        })
       } else {
-        navigate("/config")
+        UserServices.validateUser(gtID)
+        .then((response) => {
+          console.log(response.headers)
+          navigate("/config", component=response.headers)
+        })
       }
-      
+    })  
     }
   }
 

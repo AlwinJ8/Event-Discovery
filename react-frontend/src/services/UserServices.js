@@ -7,6 +7,8 @@ class UserServices {
     validateUser(userID) {
         return axios.get(USER_API_URL + "/validate?userID=" + userID)
     }
+
+
 }
 
 export default new UserServices()

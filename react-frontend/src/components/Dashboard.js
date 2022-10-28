@@ -26,7 +26,7 @@ const Dashboard = () => {
         setEvents(newEvents);
     }
 
-    return <div classname = "dashboard">
+    return <div className = "dashboard">
             <div className="navbar">
             <div className="leftSide" >
                 <img src={Logo} />
