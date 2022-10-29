@@ -28,7 +28,7 @@ import com.group24.discovery.model.User;
 import com.group24.discovery.repository.EventRepository;
 import com.group24.discovery.repository.UserRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "CurrentID")
 @RestController
 @RequestMapping("/api/")
 public class UserController {
