@@ -7,13 +7,16 @@ import { useState } from 'react';
 import AddEvent from './AddEvent';
 import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+
 
 const Dashboard = () => {
+    //const location = useLocation();
+    //const gtID = location.state.gtID;
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([
     ]);
-
+    
     const addEvent = (name, loc, desc, timeDate) => {
         const newEvent = {
             id: nanoid(),
@@ -38,11 +41,10 @@ const Dashboard = () => {
             </div>
             </div>
             <AddEvent trigger={setEventPopup} isShown={addEventPopup} handleAddEvent={addEvent}/>
-            <div>
+            <div className="eventspace">
                 <EventsList events = {events} />
             </div>
         </div>;
 };
-
 
 export default Dashboard

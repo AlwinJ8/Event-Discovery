@@ -1,7 +1,10 @@
 .dashboard {
-    background-color: #506255;
     display: flex;
-    justify-content: center;
-    flex-direction: row;
+    justify-content: flex-start;
+    flex-direction: column;
     background-position: center;
+}
+.eventspace {
+    min-height: 87vh;
+    background-color: white;
 }

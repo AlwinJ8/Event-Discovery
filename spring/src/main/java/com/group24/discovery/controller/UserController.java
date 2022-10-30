@@ -28,7 +28,7 @@ import com.group24.discovery.model.User;
 import com.group24.discovery.repository.EventRepository;
 import com.group24.discovery.repository.UserRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "CurrentID")
 @RestController
 @RequestMapping("/api/")
 public class UserController {
@@ -123,12 +123,8 @@ public class UserController {
     // Endpoint for testing
     @RequestMapping("/test") 
     public String test() {
-        User alwin = userRepository.findById(903111111L).get();
-        Event event = eventRepository.findById(2L).get();
-        eventRepository.delete(event);
-
-        return alwin.getEventsAttending().toString();
+        User user = new User(903111111, "Ethan Wang", "Student");
+        userRepository.save(user);
+        return "LOL";
     }
-    
-    
 }

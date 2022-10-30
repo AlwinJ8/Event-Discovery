@@ -6,14 +6,14 @@ const Event = ({ id, eventName, location, description, timeAndDate }) => {
         <div className="event">
             <div className='topPart'>
                 <div className = "eventHeader">
-                    <h4 className='hh'>{eventName}</h4>
-                    <h4 className='hh'>{location}</h4>
+                    <h4 key={eventName.uniqueId} className='hh'>{eventName}</h4>
+                    <h4 key={location.uniqueId} className='hh'>{location}</h4>
                 </div>
                 <h4 className='hh'>Event Host: User Who Created Event</h4>
-                <span> {description} </span>
+                <span key={description.uniqueId} >  {description} </span>
             </div>
                 <div className = "eventFooter">
-                    <small>  {timeAndDate} </small>
+                    <small key={timeAndDate.uniqueId} >   {timeAndDate} </small>
                     <div className='icons'>
                         <MdEditNote size = '1.5em'/>
                         <MdDeleteForever className='deleteIcon' size='1.5em'/>

@@ -1,21 +1,20 @@
 import React, {useState}  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
-import {Route, Router, useNavigate, useParams} from "react-router-dom"
+import {Route, Router, useLocation, useNavigate, useParams} from "react-router-dom"
 
 
-
-function InitialConfig()  {
-      const header = useParams()
-      console.log(header)
-      const navigate = useNavigate();
-      const [persontype, setPersonType] = useState();
-      const handleTypeChange = (event) => {
-        setPersonType(event.target.value);
-      };
-
+function InitialConfig() {
+  const navigate = useNavigate();
+  const [persontype, setPersonType] = useState();
+  const location = useLocation();
+  const gtID = location.state?.gtID
+  const handleTypeChange = (event) => {
+  setPersonType(event.target.value);
+  };
       const [userName, setUserName] = useState("");
       const handleUserChange = (event) => {
+        console.log(gtID)
         setUserName(event.target.value);
       };
 
@@ -58,4 +57,4 @@ function InitialConfig()  {
         );
       }
 
-export default InitialConfig
+export default InitialConfig 

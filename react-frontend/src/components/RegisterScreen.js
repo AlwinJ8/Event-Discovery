@@ -8,7 +8,6 @@ import UserServices from '../services/UserServices';
 function RegisterScreen() {
   const navigate = useNavigate();
   const [gtID, setgtID] = useState("")
-  const [header, setHeader] = useState("")
   const handleIDChange = (event) => {
     setgtID(event.target.value);
   };
@@ -35,14 +34,17 @@ function RegisterScreen() {
       .then((data) => { 
       if (data.exists) {
         UserServices.validateUser(gtID)
-        .then((response) => {
-           navigate("/dashboard", response.headers)
+        .then((response) => response.headers)
+        .then((headers) => {
+          const header = headers.get("CurrentID")
+          navigate("/dashboard", {state: {gtID: header}})
         })
       } else {
         UserServices.validateUser(gtID)
-        .then((response) => {
-          console.log(response.headers)
-          navigate("/config", component=response.headers)
+        .then((response) => response.headers)
+        .then((headers) => {
+          const header = headers.get("CurrentID")
+          navigate("/config", {state: {gtID: header}})
         })
       }
     })  
