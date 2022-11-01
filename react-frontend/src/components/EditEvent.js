@@ -24,12 +24,12 @@ let useClickOutside = (handler) => {
 };
 
 function EditEvent(props) {
-    const [eventDesc, setEventDesc] = useState(props.desc);
+    let [eventDesc, setEventDesc] = useState(props.desc);
     const handleChangeDesc = (event) => {
         setEventDesc(event.target.value);
     };
 
-    const [eventName, setEventName] = useState(props.name);
+    let [eventName, setEventName] = useState(props.name);
     const handleChangeName = (event) => {
         setEventName(event.target.value);
     };
@@ -46,11 +46,11 @@ function EditEvent(props) {
 
     const handleSaveClick = () => {
         props.trigger(false);
-        props.handleEditEvent(eventName, eventLoc, eventDesc, eventTimeDate);
         setEventLoc(eventLoc);
         setEventDesc(eventDesc);
         setEventTimeDate(eventTimeDate);
         setEventName(eventName);
+        props.handleEditEvent(eventName, eventLoc, eventDesc, eventTimeDate);
     }
 
     let domNode = useClickOutside(() => {

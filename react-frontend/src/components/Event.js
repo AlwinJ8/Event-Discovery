@@ -12,49 +12,58 @@ import "../dashboardHeader.css";
 import Dash from "./Dashboard"
 import { Link } from "react-router-dom";
 import '../event.css'
+import { render } from '@testing-library/react';
 const Event = ({ id, eventName, location, description, timeAndDate }) => {
     const [editEventPopup, setEventPopup] = useState(false);
 
+    const [desc, setDesc] = useState(description);
+    const handleChangeDesc = (event) => {
+        setDesc(event.target.value);
+    };
+
+    const [name, setName] = useState(eventName);
+    const handleChangeName = (event) => {
+        setName(event.target.value);
+    };
+
+    const [loc, setLoc] = useState(location);
+    const handleChangeLoc = (event) => {
+        setLoc(event.target.value);
+    };
+
+    const [timeDate, setTimeDate] = useState(timeAndDate);
+    const handleChangeTimeDate = (event) => {
+        setTimeDate(event.target.value);
+    };
+
     const editEvent = (name, loc, desc, timeDate) => {
-        const currEvent = {
-            id: id,
-            eventName: name,
-            location: loc,
-            description: desc,
-            timeAndDate: timeDate
-        }
-        // let nEvents = []
-        // if (events.length != 0) {
-        //     for (let i = 0; i < events.length - 1; i++) {
-        //         nEvents[i] = events[i]
-        //     }
-        // }
-        // const newEvents = [Dash.getInstance.events, currEvent];
-        // Dash.getInstance.setEvents(newEvents);
-        const newEvents = [Dash.getInstance.events, currEvent];
-        Dash.getInstance.setEvents(newEvents)
+        setName(name);
+        setDesc(desc);
+        setTimeDate(timeDate);
+        setLoc(loc);
     }
 
     return (
         <div className="event">
             <div className='topPart'>
                 <div className = "eventHeader">
-                    <h4 className='hh'>{eventName}</h4>
-                    <h4 className='hh'>{location}</h4>
+                    <EditEvent desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
+                    <h4 className='hh'>{name}</h4>
+                    <h4 className='hh'>{loc}</h4>
                 </div>
                 <h4 className='hh'>Event Host: User Who Created Event</h4>
-                <span> {description} </span>
+                <span> {desc} </span>
             </div>
                 <div className = "eventFooter">
-                    <small>  {timeAndDate} </small>
+                    <small>  {timeDate} </small>
                     <div className='icons'>
                         <Link className="createline" onClick={() => setEventPopup(true)}> <MdEditNote size = '1.5em'/> </Link>
                         <MdDeleteForever className='deleteIcon' size='1.5em'/>
                     </div>
-                    <EditEvent desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
+                    
                 </div>
         </div>
     );
-};
+}
 
 export default Event;

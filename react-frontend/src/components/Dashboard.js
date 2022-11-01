@@ -1,5 +1,5 @@
 import React from 'react';
-import { nanoid } from 'nanoid'
+import { nanoid }  from 'nanoid'
 import '../App.css';
 import "../dashboard.css";
 import EventsList from './EventsList';
