@@ -42,7 +42,7 @@ function RegisterScreen() {
         UserServices.validateUser(gtID)
         .then((response) => {
           console.log(response.headers)
-          navigate("/config", component=response.headers)
+          navigate("/config", response.headers)
         })
       }
     })  
