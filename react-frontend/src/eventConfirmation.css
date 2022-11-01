@@ -1,4 +1,4 @@
-.popup {
+.confirmationPopup {
     position: fixed;
     top: 0;
     left: 0;
@@ -9,10 +9,10 @@
     justify-content: center;
     align-items: center;
 }
-.popupInner {
+.confirmationPopupInner {
     background-color: #282B30;
-    min-height: 250px;
-    min-width: 500px;
+    min-height: 20px;
+    min-width: 100px;
     color: white;
     border-radius: 10px;
     padding: 1rem;
@@ -28,28 +28,4 @@
 .addIcon:hover {
     color: white;
     cursor: pointer;
-}
-
-textarea {
-    color: white;
-    border: none;
-    resize: none;
-    background-color: #282B30;
-}
-
-textarea:focus {
-    outline: none;
-}
-
-.eventFooter {
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.eventHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }

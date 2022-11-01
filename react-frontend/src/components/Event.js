@@ -7,6 +7,7 @@ import "../dashboard.css";
 import EventsList from './EventsList';
 import { useState } from 'react';
 import EditEvent from './EditEvent';
+import EventConfirmation from './EventConfirmation';
 import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
 import Dash from "./Dashboard"
@@ -15,6 +16,7 @@ import '../event.css'
 import { render } from '@testing-library/react';
 const Event = ({ id, eventName, location, description, timeAndDate }) => {
     const [editEventPopup, setEventPopup] = useState(false);
+    const [editConfirmationPopup, setEditConfirmationPopup] = useState(false);
 
     const [desc, setDesc] = useState(description);
     const handleChangeDesc = (event) => {
@@ -41,6 +43,7 @@ const Event = ({ id, eventName, location, description, timeAndDate }) => {
         setDesc(desc);
         setTimeDate(timeDate);
         setLoc(loc);
+        setEditConfirmationPopup(true)
     }
 
     return (
@@ -48,6 +51,7 @@ const Event = ({ id, eventName, location, description, timeAndDate }) => {
             <div className='topPart'>
                 <div className = "eventHeader">
                     <EditEvent desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
+                    <EventConfirmation trigger={setEditConfirmationPopup} isShown={editConfirmationPopup}/>
                     <h4 className='hh'>{name}</h4>
                     <h4 className='hh'>{loc}</h4>
                 </div>

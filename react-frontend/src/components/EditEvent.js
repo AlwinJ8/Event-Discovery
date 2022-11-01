@@ -24,6 +24,7 @@ let useClickOutside = (handler) => {
 };
 
 function EditEvent(props) {
+    
     let [eventDesc, setEventDesc] = useState(props.desc);
     const handleChangeDesc = (event) => {
         setEventDesc(event.target.value);
