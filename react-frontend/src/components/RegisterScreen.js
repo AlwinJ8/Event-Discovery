@@ -3,9 +3,13 @@ import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
 import { useNavigate } from "react-router-dom"
 import UserServices from '../services/UserServices';
-
+import { useContext } from 'react';
+import InitialConfig from './InitialConfig';
+import Dashboard from './Dashboard';
+import { Context } from "./Context";
 
 function RegisterScreen() {
+  const [context, setContext] = useContext(Context);
   const navigate = useNavigate();
   const [gtID, setgtID] = useState("")
   const handleIDChange = (event) => {
@@ -36,15 +40,15 @@ function RegisterScreen() {
         UserServices.validateUser(gtID)
         .then((response) => response.headers)
         .then((headers) => {
-          const header = headers.get("CurrentID")
-          navigate("/dashboard", {state: {gtID: header}})
+          setContext(headers.get("CurrentID"))
+          navigate("/dashboard", {state: {gtID: headers.get("CurrentID")}})
         })
       } else {
         UserServices.validateUser(gtID)
         .then((response) => response.headers)
         .then((headers) => {
-          const header = headers.get("CurrentID")
-          navigate("/config", {state: {gtID: header}})
+          setContext(headers.get("CurrentID"))
+          navigate("/config", {state: {gtID: headers.get("CurrentID")}})
         })
       }
     })  

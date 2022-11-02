@@ -2,19 +2,19 @@ import React, {useState}  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
 import {Route, Router, useLocation, useNavigate, useParams} from "react-router-dom"
-
+import { useContext } from 'react';
+import {Context} from './Context';
+import UserServices from '../services/UserServices';
 
 function InitialConfig() {
   const navigate = useNavigate();
-  const [persontype, setPersonType] = useState();
-  const location = useLocation();
-  const gtID = location.state?.gtID
+  const [persontype, setPersonType] = useState("Student");
+  const [context, setContext] = useContext(Context);
   const handleTypeChange = (event) => {
   setPersonType(event.target.value);
   };
       const [userName, setUserName] = useState("");
       const handleUserChange = (event) => {
-        console.log(gtID)
         setUserName(event.target.value);
       };
 
@@ -22,7 +22,8 @@ function InitialConfig() {
         if (userName == '') {
             alert("Please enter a name")
         } else {
-            navigate("/dashboard")
+          UserServices.addUser(context, userName, persontype);
+          navigate("/dashboard")
         }
         event.preventDefault();
       }
@@ -53,7 +54,6 @@ function InitialConfig() {
         </form>
           </header>
         </div>
-          
         );
       }
 

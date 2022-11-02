@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom"
   
 function Welcome () {
     const navigate = useNavigate();
-    
         return (
           <div className="App">
             <header className="App-header">
