@@ -2,6 +2,7 @@ package com.group24.discovery.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,13 +49,24 @@ public class UserController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<Event>> getAllEvents(@RequestHeader("CurrentID") String CurrentID) {
+    public ResponseEntity<List<Object>> getAllEvents(@RequestHeader("CurrentID") String CurrentID) {
         List<Event> events = eventRepository.findAll();
+        List<Object> result = new ArrayList<Object>();
+        for (Event e : events) {
+            HashMap<String, Object> temp = new HashMap<>();
+            temp.put("id", e.getId());
+            temp.put("name", e.getName());
+            temp.put("location", e.getLocation());
+            temp.put("date", e.getDate());
+            temp.put("description", e.getDescription());
+            temp.put("host", e.getHost().getID());
+            result.add(temp);
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.add("CurrentID", CurrentID);
-        return new ResponseEntity<>(events, headers, HttpStatus.OK);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
-
+    
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestHeader("CurrentID") String currID, @RequestBody User user) {
         HttpHeaders headers = new HttpHeaders();

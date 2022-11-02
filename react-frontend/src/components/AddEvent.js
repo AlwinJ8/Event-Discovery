@@ -1,10 +1,12 @@
 import '../event.css'
 import { MdNoteAdd } from 'react-icons/md';
 import '../AddEvent.css'
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
+import { Context } from './Context';
 
 
 function AddEvent(props) {
+    const [context, setContext] = useContext(Context);
     const [eventDesc, setEventDesc] = useState("");
     const handleChangeDesc = (event) => {
         setEventDesc(event.target.value);
@@ -13,6 +15,11 @@ function AddEvent(props) {
     const [eventName, setEventName] = useState("");
     const handleChangeName = (event) => {
         setEventName(event.target.value);
+    };
+
+    const [eventHost, setEventHost] = useState("");
+    const handleChangeHost = (event) => {
+        setEventHost(event.target.value);
     };
 
     const [eventLoc, setEventLoc] = useState("");
@@ -29,6 +36,7 @@ function AddEvent(props) {
         props.trigger(false);
         props.handleAddEvent(eventName, eventLoc, eventDesc, eventTimeDate);
         setEventLoc("");
+        setEventHost(context)
         setEventDesc("");
         setEventTimeDate("");
         setEventName("");
@@ -53,7 +61,7 @@ function AddEvent(props) {
                         onChange={handleChangeLoc}
                     ></textarea>
                 </div>
-                <small>Event Host: User Who Created Event</small>
+                <small>Event Host: You</small>
                 <textarea
                     rows='8'
                     cols='10'

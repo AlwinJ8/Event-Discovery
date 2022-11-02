@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import '../App.css';
 import "../dashboard.css";
 import EventsList from './EventsList';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import EditEvent from './EditEvent';
 import EventConfirmation from './EventConfirmation';
 import Logo from "../images/GT_logo.png";
@@ -13,9 +13,11 @@ import "../dashboardHeader.css";
 import Dash from "./Dashboard"
 import { Link } from "react-router-dom";
 import '../event.css';
+import { Context } from './Context';
 
 import { render } from '@testing-library/react';
-const Event = ({ id, eventName, location, description, timeAndDate, handleDeleteEvent }) => {
+const Event = ({ id, host, eventName, location, description, timeAndDate, handleDeleteEvent }) => {
+    const [context, setContext] = useContext(Context);
     const [editEventPopup, setEventPopup] = useState(false);
     const [editConfirmationPopup, setEditConfirmationPopup] = useState(false);
 
@@ -56,7 +58,7 @@ const Event = ({ id, eventName, location, description, timeAndDate, handleDelete
                     <h4 className='hh'>{name}</h4>
                     <h4 className='hh'>{loc}</h4>
                 </div>
-                <h4 className='hh'>Event Host: User Who Created Event</h4>
+                <h4 className='hh'>Event Host: {host}</h4>
                 <span>  {desc} </span>
             </div>
                 <div className = "eventFooter">
