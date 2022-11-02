@@ -3,25 +3,6 @@ import { MdNoteAdd } from 'react-icons/md';
 import '../AddEvent.css'
 import { useEffect, useState, useRef } from 'react';
 
-let useClickOutside = (handler) => {
-    let domNode = useRef();
-
-    useEffect(() => {
-    let maybeHandler = (event) => {
-        if (!domNode.current.contains(event.target)) {
-        handler();
-        }
-    };
-
-    document.addEventListener("mousedown", maybeHandler);
-
-        return () => {
-        document.removeEventListener("mousedown", maybeHandler);
-        };
-    });
-
-    return domNode;
-};
 
 function AddEvent(props) {
     const [eventDesc, setEventDesc] = useState("");
@@ -53,14 +34,9 @@ function AddEvent(props) {
         setEventName("");
     }
 
-
-    let domNode = useClickOutside(() => {
-        props.trigger(false);
-    });
-
     return (props.isShown) ? (
         <div className="popup">
-            <div ref={domNode} className='popupInner'>
+            <div className='popupInner'>
                 <div className = "eventHeader">
                     <textarea
                         rows='1'

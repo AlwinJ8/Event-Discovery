@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,11 +29,10 @@ import com.group24.discovery.model.User;
 import com.group24.discovery.repository.EventRepository;
 import com.group24.discovery.repository.UserRepository;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "CurrentID")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/")
 public class UserController {
-
     @Autowired
     private UserRepository userRepository;
 
@@ -61,7 +61,7 @@ public class UserController {
         headers.add("CurrentID", currID);
         user.setID(Long.parseLong(currID));
         User savedUser = userRepository.save(user);
-        return new ResponseEntity<>(savedUser, headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(savedUser, headers, HttpStatus.OK);
     }
 
     @PostMapping("/events")
@@ -71,7 +71,7 @@ public class UserController {
         User eventHost = userRepository.findById(Long.parseLong(currID)).get();
         event.setHost(eventHost);
         Event createdEvent = eventRepository.save(event);
-        return new ResponseEntity<>(createdEvent, headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(createdEvent, headers, HttpStatus.OK);
     }
 
     /*
@@ -123,12 +123,8 @@ public class UserController {
     // Endpoint for testing
     @RequestMapping("/test") 
     public String test() {
-        User alwin = userRepository.findById(903111111L).get();
-        Event event = eventRepository.findById(2L).get();
-        eventRepository.delete(event);
-
-        return alwin.getEventsAttending().toString();
+        User user = new User(903111111, "Ethan Wang", "Student");
+        userRepository.save(user);
+        return "LOL";
     }
-    
-    
 }

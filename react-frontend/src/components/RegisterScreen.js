@@ -3,17 +3,19 @@ import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
 import { useNavigate } from "react-router-dom"
 import UserServices from '../services/UserServices';
-
+import { useContext } from 'react';
+import InitialConfig from './InitialConfig';
+import Dashboard from './Dashboard';
+import { Context } from "./Context";
 
 function RegisterScreen() {
+  const [context, setContext] = useContext(Context);
   const navigate = useNavigate();
   const [gtID, setgtID] = useState("")
-  const [header, setHeader] = useState("")
   const handleIDChange = (event) => {
     setgtID(event.target.value);
   };
   const didMount = useRef(false)
-
 
   //async function fetchData() {
     //UserServices.validateUser(gtID)
@@ -35,14 +37,17 @@ function RegisterScreen() {
       .then((data) => { 
       if (data.exists) {
         UserServices.validateUser(gtID)
-        .then((response) => {
-           navigate("/dashboard", response.headers)
+        .then((response) => response.headers)
+        .then((headers) => {
+          setContext(headers.get("CurrentID"))
+          navigate("/dashboard", {state: {gtID: headers.get("CurrentID")}})
         })
       } else {
         UserServices.validateUser(gtID)
-        .then((response) => {
-          console.log(response.headers)
-          navigate("/config", response.headers)
+        .then((response) => response.headers)
+        .then((headers) => {
+          setContext(headers.get("CurrentID"))
+          navigate("/config", {state: {gtID: headers.get("CurrentID")}})
         })
       }
     })  

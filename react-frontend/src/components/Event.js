@@ -1,5 +1,5 @@
 import { MdDeleteForever } from 'react-icons/md';
-import { MdEditNote } from 'react-icons/md'
+import { MdEditNote } from 'react-icons/md';
 import React from 'react';
 import { nanoid } from 'nanoid'
 import '../App.css';
@@ -12,9 +12,10 @@ import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
 import Dash from "./Dashboard"
 import { Link } from "react-router-dom";
-import '../event.css'
+import '../event.css';
+
 import { render } from '@testing-library/react';
-const Event = ({ id, eventName, location, description, timeAndDate }) => {
+const Event = ({ id, eventName, location, description, timeAndDate, handleDeleteEvent }) => {
     const [editEventPopup, setEventPopup] = useState(false);
     const [editConfirmationPopup, setEditConfirmationPopup] = useState(false);
 
@@ -47,7 +48,7 @@ const Event = ({ id, eventName, location, description, timeAndDate }) => {
     }
 
     return (
-        <div className="event">
+        <div key= {id} className="event" >
             <div className='topPart'>
                 <div className = "eventHeader">
                     <EditEvent desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
@@ -56,13 +57,13 @@ const Event = ({ id, eventName, location, description, timeAndDate }) => {
                     <h4 className='hh'>{loc}</h4>
                 </div>
                 <h4 className='hh'>Event Host: User Who Created Event</h4>
-                <span> {desc} </span>
+                <span>  {desc} </span>
             </div>
                 <div className = "eventFooter">
-                    <small>  {timeDate} </small>
+                    <small>   {timeDate} </small>
                     <div className='icons'>
                         <Link className="createline" onClick={() => setEventPopup(true)}> <MdEditNote size = '1.5em'/> </Link>
-                        <MdDeleteForever className='deleteIcon' size='1.5em'/>
+                        <MdDeleteForever onClick={() => handleDeleteEvent(id)} className='deleteIcon' size='1.5em'/>
                     </div>
                     
                 </div>

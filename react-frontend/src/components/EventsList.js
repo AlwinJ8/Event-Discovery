@@ -2,17 +2,19 @@ import Event from './Event';
 import '../eventsList.css';
 
 const EventsList = ({
-	events,
+	events, handleDeleteEvent 
 }) => {
 	return (
 		<div className='eventsList'>
 			{events.map((event) => (
 				<Event
+					key={event.id}
 					id={event.id}
 					eventName={event.eventName}
 					location={event.location}
                     description={event.description}
                     timeAndDate={event.timeAndDate}
+					handleDeleteEvent= {handleDeleteEvent}
 				/>
 			))}
 		</div>
