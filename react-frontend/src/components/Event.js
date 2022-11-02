@@ -51,7 +51,7 @@ const Event = ({ id, eventName, location, description, timeAndDate, handleDelete
         <div key= {id} className="event" >
             <div className='topPart'>
                 <div className = "eventHeader">
-                    <EditEvent desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
+                    <EditEvent id={id} desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
                     <EventConfirmation trigger={setEditConfirmationPopup} isShown={editConfirmationPopup}/>
                     <h4 className='hh'>{name}</h4>
                     <h4 className='hh'>{loc}</h4>

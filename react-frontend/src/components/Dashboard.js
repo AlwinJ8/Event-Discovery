@@ -45,7 +45,7 @@ const Dashboard = () => {
     }
 
    
-    const edit = (newEvent) => {
+    /*const edit = (newEvent) => {
         const newEvents = [...events, newEvent];
         // let nEvents = []
         // if (events.length != 0) {
@@ -55,7 +55,7 @@ const Dashboard = () => {
         // }
         console.log("hi")
         setEvents(newEvents);
-    }
+    }*/
 
     const addEvent = (name, loc, desc, timeDate) => {
         UserServices.addEvent(context, name, loc, timeDate, desc)

@@ -24,6 +24,12 @@ class UserServices {
         const headers = {"CurrentID": userID}
         return axios.delete(USER_API_URL + "/events/" + eventID, {headers: headers})
     }
+
+    editEvent(userID, eventID, name, location, date, description) {
+        const headers = {"CurrentID": userID}
+        const body = {"name": name, "location": location, "date": date, "description": description}
+        return axios.put(USER_API_URL + "/events/" + eventID, body, {headers: headers}) 
+    }
 }
 
 export default new UserServices()

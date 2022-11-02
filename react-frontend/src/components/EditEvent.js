@@ -1,7 +1,9 @@
 import '../event.css'
 import { MdNoteAdd } from 'react-icons/md';
 import '../AddEvent.css'
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext} from 'react';
+import { Context } from "./Context";
+import UserServices from '../services/UserServices';
 
 let useClickOutside = (handler) => {
     let domNode = useRef();
@@ -24,6 +26,7 @@ let useClickOutside = (handler) => {
 };
 
 function EditEvent(props) {
+    const [context, setContext] = useContext(Context);
     
     let [eventDesc, setEventDesc] = useState(props.desc);
     const handleChangeDesc = (event) => {
@@ -46,12 +49,21 @@ function EditEvent(props) {
     };
 
     const handleSaveClick = () => {
-        props.trigger(false);
-        setEventLoc(eventLoc);
-        setEventDesc(eventDesc);
-        setEventTimeDate(eventTimeDate);
-        setEventName(eventName);
-        props.handleEditEvent(eventName, eventLoc, eventDesc, eventTimeDate);
+        UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc)
+        .then((response) => response.data)
+        .then((data) => {
+            console.log(data.length)
+            if (data.length == 2) {
+                props.trigger(false);
+                setEventLoc(eventLoc);
+                setEventDesc(eventDesc);
+                setEventTimeDate(eventTimeDate);
+                setEventName(eventName);
+                props.handleEditEvent(eventName, eventLoc, eventDesc, eventTimeDate);
+            } else {
+                alert("Event was not edited, no permissions!")
+            }
+        })
     }
 
     let domNode = useClickOutside(() => {
