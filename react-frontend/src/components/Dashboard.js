@@ -15,33 +15,35 @@ import UserServices from '../services/UserServices';
 const Dashboard = () => {
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
-    const [events, setEvents] = useState([
-    ]);
-
-    /*useEffect(() => {
+    const [events, setEvents] = useState([]);
+    
+    useEffect(() => {
         getEvents();
-    });
+    }, []);
 
     const getEvents = () => {
         UserServices.showEvents(context)
         .then((response) => response.data)
         .then((data) => {
-            for (let i = 0; i < data.length; i++) {
-                const newEvent = {
-                    id: data[i].id, 
-                    eventName: data[i].name,
-                    loc: data[i].location,
-                    desc: data[i].description, 
-                    timeAndDate: data[i].date
-                }
-                const newEvents = [...events, newEvent];
-                setEvents(newEvents);
+            for (const entry of data) {
+                const id = entry.id
+                const eventName = entry.name
+                const loc = entry.location
+                const desc = entry.description
+                const timeAndDate = entry.date
+                //console.log(newEvent)
+                //console.log(id)
+                //console.log(eventName)
+                //console.log(loc)
+                //console.log(desc)
+                //console.log(timeAndDate)
+                //newEvents = [...events, newEvent];
+                setEvents((events) => [...events, {id: id, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
             }
-        })
-    }*/
+        });
+    }
 
    
-
     const addEvent = (name, loc, desc, timeDate) => {
         UserServices.addEvent(context, name, loc, timeDate, desc)
         .then((response) => response.data)
@@ -58,6 +60,21 @@ const Dashboard = () => {
             setEvents(newEvents);
         })  
     }
+    
+    const handleDelete = (id) => {
+        UserServices.removeEvent(context, id)
+        .then((response) => response.data)
+        .then((data) => {
+            if (data.deleted) {
+                const updateDelete = events.filter((event) =>
+                    id != event.id)
+                setEvents(updateDelete)
+                alert("You have deleted the event")
+            } else {
+                alert("You do not have permissions to delete this event")
+            }
+        });
+    }
 
     return <div className = "dashboard">
             <div className="navbar">
@@ -72,7 +89,7 @@ const Dashboard = () => {
             </div>
             <AddEvent trigger={setEventPopup} isShown={addEventPopup} handleAddEvent={addEvent}/>
             <div className="eventspace">
-                <EventsList events = {events} />
+                <EventsList events = {events} handleDeleteEvent= {handleDelete} />
             </div>
         </div>;
 };

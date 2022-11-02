@@ -17,7 +17,6 @@ function RegisterScreen() {
   };
   const didMount = useRef(false)
 
-
   //async function fetchData() {
     //UserServices.validateUser(gtID)
       //.then((response) => response.data)

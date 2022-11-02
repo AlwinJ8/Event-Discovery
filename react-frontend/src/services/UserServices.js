@@ -20,8 +20,9 @@ class UserServices {
         const headers = {"CurrentID": userID}
         return axios.get(USER_API_URL + "/events", {headers: headers})
     }
-    removeEvent(userID) {
-        return axios.delete(USER_API_URL + "/events/{id}", {header: {"CurrentID": userID}})
+    removeEvent(userID, eventID) {
+        const headers = {"CurrentID": userID}
+        return axios.delete(USER_API_URL + "/events/" + eventID, {headers: headers})
     }
 }
 
