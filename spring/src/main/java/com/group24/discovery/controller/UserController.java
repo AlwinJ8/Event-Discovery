@@ -59,7 +59,7 @@ public class UserController {
             temp.put("location", e.getLocation());
             temp.put("date", e.getDate());
             temp.put("description", e.getDescription());
-            temp.put("host", e.getHost().getID());
+            temp.put("host", e.getHost().getName());
             result.add(temp);
         }
         HttpHeaders headers = new HttpHeaders();
