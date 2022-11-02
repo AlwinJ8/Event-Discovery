@@ -53,7 +53,7 @@ const Event = ({ id, host, eventName, location, description, timeAndDate, handle
         <div key= {id} className="event" >
             <div className='topPart'>
                 <div className = "eventHeader">
-                    <EditEvent id={id} desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
+                    <EditEvent  id={id} desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
                     <EventConfirmation trigger={setEditConfirmationPopup} isShown={editConfirmationPopup}/>
                     <h4 className='hh'>{name}</h4>
                     <h4 className='hh'>{loc}</h4>
@@ -64,10 +64,10 @@ const Event = ({ id, host, eventName, location, description, timeAndDate, handle
                 <div className = "eventFooter">
                     <small>   {timeDate} </small>
                     <div className='icons'>
-                        <Link className="createline" onClick={() => setEventPopup(true)}> <MdEditNote size = '1.5em'/> </Link>
+                        <Link className="createline" onClick={() => setEventPopup(true)}> <MdEditNote className = "editIcon" size = '1.5em'/> </Link>
                         <MdDeleteForever onClick={() => handleDeleteEvent(id)} className='deleteIcon' size='1.5em'/>
                     </div>
-                    
+
                 </div>
         </div>
     );

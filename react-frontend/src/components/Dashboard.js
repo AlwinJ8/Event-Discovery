@@ -11,13 +11,19 @@ import "../dashboardHeader.css";
 import { Link } from "react-router-dom";
 import { Context } from './Context';
 import UserServices from '../services/UserServices';
-
+import Pagination from './Pagination';
 
 const Dashboard = () => {
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
-    
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(10);
+    const lastPostIndex = currentPage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = events.slice(firstPostIndex, lastPostIndex);
+
+
     useEffect(() => {
         getEvents();
     }, []);
@@ -45,7 +51,7 @@ const Dashboard = () => {
         });
     }
 
-   
+
     /*const edit = (newEvent) => {
         const newEvents = [...events, newEvent];
         // let nEvents = []
@@ -66,7 +72,7 @@ const Dashboard = () => {
             const hoster = data.host
             const newEvent = {
                 id: test,
-                host: hoster, 
+                host: hoster,
                 eventName: name,
                 location: loc,
                 description: desc,
@@ -74,9 +80,9 @@ const Dashboard = () => {
             }
             const newEvents = [...events, newEvent];
             setEvents(newEvents);
-        })  
+        })
     }
-    
+
     const handleDelete = (id) => {
         UserServices.removeEvent(context, id)
         .then((response) => response.data)
@@ -105,8 +111,15 @@ const Dashboard = () => {
             </div>
             <AddEvent trigger={setEventPopup} isShown={addEventPopup} handleAddEvent={addEvent}/>
             <div className="eventspace">
-                <EventsList events = {events} handleDeleteEvent= {handleDelete} />
+                <EventsList events = {currentPosts} handleDeleteEvent= {handleDelete} />
+
             </div>
+            <Pagination
+                totalPosts={events.length}
+                postsPerPage={postsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
         </div>;
 };
 
