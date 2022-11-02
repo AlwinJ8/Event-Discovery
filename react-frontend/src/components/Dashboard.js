@@ -28,6 +28,7 @@ const Dashboard = () => {
         .then((data) => {
             for (const entry of data) {
                 const id = entry.id
+                const host = entry.host
                 const eventName = entry.name
                 const loc = entry.location
                 const desc = entry.description
@@ -39,7 +40,7 @@ const Dashboard = () => {
                 //console.log(desc)
                 //console.log(timeAndDate)
                 //newEvents = [...events, newEvent];
-                setEvents((events) => [...events, {id: id, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
+                setEvents((events) => [...events, {id: id, host: host, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
             }
         });
     }
@@ -62,8 +63,10 @@ const Dashboard = () => {
         .then((response) => response.data)
         .then((data) => {
             const test = data.id
+            const hoster = data.host
             const newEvent = {
                 id: test,
+                host: hoster, 
                 eventName: name,
                 location: loc,
                 description: desc,

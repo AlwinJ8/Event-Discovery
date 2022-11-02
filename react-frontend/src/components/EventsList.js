@@ -10,6 +10,7 @@ const EventsList = ({
 				<Event
 					key={event.id}
 					id={event.id}
+					host={event.host}
 					eventName={event.eventName}
 					location={event.location}
                     description={event.description}
