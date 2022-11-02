@@ -1,13 +1,14 @@
 import React from 'react';
-import { nanoid } from 'nanoid'
+import { nanoid }  from 'nanoid'
 import '../App.css';
 import "../dashboard.css";
 import EventsList from './EventsList';
 import { useState, useContext, useEffect } from 'react';
+import Event from './Event'
 import AddEvent from './AddEvent';
 import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Context } from './Context';
 import UserServices from '../services/UserServices';
 
@@ -44,6 +45,18 @@ const Dashboard = () => {
     }
 
    
+    /*const edit = (newEvent) => {
+        const newEvents = [...events, newEvent];
+        // let nEvents = []
+        // if (events.length != 0) {
+        //     for (let i = 0; i < events.length - 1; i++) {
+        //         nEvents[i] = events[i]
+        //     }
+        // }
+        console.log("hi")
+        setEvents(newEvents);
+    }*/
+
     const addEvent = (name, loc, desc, timeDate) => {
         UserServices.addEvent(context, name, loc, timeDate, desc)
         .then((response) => response.data)
