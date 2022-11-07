@@ -1,7 +1,6 @@
 package com.group24.discovery.model;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,38 +38,50 @@ public class Event {
     @Column(name = "descript")
     private String description;
 
+    @Column(name = "capacity")
+    private int capacity;
+
+    @Column(name = "inviteonly", columnDefinition = "BIT", length = 1)
+    private boolean iniviteOnly;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hostid")
     @JsonIgnore
     private User host;
 
-    @ManyToMany(mappedBy = "eventsAttending", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = UserEvent.class)
     @JsonIgnore
-    private Set<User> usersAttending;
+    private Set<UserEvent> usersAttending;
 
+    // Constructors
     public Event() {
 
     }
 
-    public Event(String name, String location, String date, User host, String description) {
+    public Event(String name, String location, String date, User host, String description, int capacity, boolean inviteonly) {
         super();
         this.name = name;
         this.location = location;
         this.date = date;
         this.host = host;
         this.description = description;
+        this.capacity = capacity;
+        this.iniviteOnly = inviteonly;
         this.usersAttending = new HashSet<>();
     }
 
-    public Event(String name, String location, String date, String description) {
+    public Event(String name, String location, String date, String description, int capacity, boolean inviteonly) {
         super();
         this.name = name;
         this.location = location;
         this.date = date;
         this.description = description;
+        this.capacity = capacity;
+        this.iniviteOnly = inviteonly;
         this.usersAttending = new HashSet<>();
     }
 
+    // Getters and setters
     public long getId() {
         return id;
     }
@@ -107,25 +118,38 @@ public class Event {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Set<User> getUsersAttending() {
+    public int getCapacity() {
+        return capacity;
+    }
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+    public boolean isIniviteOnly() {
+        return iniviteOnly;
+    }
+    public void setIniviteOnly(boolean iniviteOnly) {
+        this.iniviteOnly = iniviteOnly;
+    }
+    public Set<UserEvent> getUsersAttending() {
         return usersAttending;
     }
-    public void setUsersAttending(Set<User> usersAttending) {
+    public void setUsersAttending(Set<UserEvent> usersAttending) {
         this.usersAttending = usersAttending;
     }
     
 
-    public void addAttendingUser(User user) {
-        this.usersAttending.add(user);
-        user.getEventsAttending().add(this);
-    }
+    // public void addAttendingUser(User user) {
+    //     UserEvent userEvent = new UserEvent(user, this);
+    //     this.usersAttending.add(userEvent);
+    //     user.getEventsAttending().add(userEvent);
+    // }
 
-    public void removeAttendingUser(User user) {
-        if (user != null) {
-            this.usersAttending.remove(user);
-            user.getEventsAttending().remove(this);
-        }
-    }
+    // public void removeAttendingUser(UserEvent user) {
+    //     if (user != null) {
+    //         this.usersAttending.remove(user);
+    //         user.getEventsAttending().remove(this);
+    //     }
+    // }
 
     // Tester toString for events
     public String toString() {
