@@ -5,9 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,13 +30,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "host", fetch = FetchType.LAZY)
     private List<Event> hostedEvents;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-        name = "userevents",
-        joinColumns = @JoinColumn(name = "userid"),
-        inverseJoinColumns = @JoinColumn(name = "eventid")
-    )
-    private Set<Event> eventsAttending;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = UserEvent.class)
+    private Set<UserEvent> eventsAttending;
 
     public User() {
         
@@ -92,11 +84,11 @@ public class User {
         this.hostedEvents = events;
     }
 
-    public Set<Event> getEventsAttending() {
+    public Set<UserEvent> getEventsAttending() {
         return this.eventsAttending;
     }
 
-    public void setEventsAttending(Set<Event> events) {
+    public void setEventsAttending(Set<UserEvent> events) {
         this.eventsAttending = events;
     }
 
@@ -111,14 +103,15 @@ public class User {
     }
 
     public void attendEvent(Event event) {
-        this.eventsAttending.add(event);
-        event.getUsersAttending().add(this);
+        UserEvent userEvent = new UserEvent(this, event);
+        this.eventsAttending.add(userEvent);
+        event.getUsersAttending().add(userEvent);
     }
 
-    public void unattendEvent(Event event) {
-        if (event != null) {
-            this.eventsAttending.remove(event);
-            event.getUsersAttending().remove(this);
-        }
-    }
+    // public void unattendEvent(UserEvent event) {
+    //     if (event != null) {
+    //         this.eventsAttending.remove(event);
+    //         event.getUsersAttending().remove(event);
+    //     }
+    // }
 }
