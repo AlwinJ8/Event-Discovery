@@ -18,7 +18,7 @@ const Dashboard = () => {
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(10);
+    const [postsPerPage, setPostsPerPage] = useState(12);
     const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = events.slice(firstPostIndex, lastPostIndex);
