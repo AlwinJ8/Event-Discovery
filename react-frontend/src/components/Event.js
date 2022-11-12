@@ -1,5 +1,6 @@
 import { MdDeleteForever } from 'react-icons/md';
 import { MdEditNote } from 'react-icons/md';
+import { MdVisibility } from 'react-icons/md';
 import React from 'react';
 import { nanoid } from 'nanoid'
 import '../App.css';
@@ -10,7 +11,7 @@ import EditEvent from './EditEvent';
 import EventConfirmation from './EventConfirmation';
 import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
-import Dash from "./Dashboard"
+import ViewEvent from './ViewEvent';
 import { Link } from "react-router-dom";
 import '../event.css';
 import { Context } from './Context';
@@ -19,6 +20,7 @@ import { render } from '@testing-library/react';
 const Event = ({ id, host, eventName, location, description, timeAndDate, handleDeleteEvent }) => {
     const [context, setContext] = useContext(Context);
     const [editEventPopup, setEventPopup] = useState(false);
+    const [eventViewPopup, setEventViewPopup] = useState(false);
     const [editConfirmationPopup, setEditConfirmationPopup] = useState(false);
 
     const [desc, setDesc] = useState(description);
@@ -53,6 +55,7 @@ const Event = ({ id, host, eventName, location, description, timeAndDate, handle
         <div key= {id} className="event" >
             <div className='topPart'>
                 <div className = "eventHeader">
+                    <ViewEvent  id={id} desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventViewPopup} isShown={eventViewPopup} handleEditEvent={editEvent}/>
                     <EditEvent  id={id} desc={description} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
                     <EventConfirmation trigger={setEditConfirmationPopup} isShown={editConfirmationPopup}/>
                     <h4 className='hh'>{name}</h4>
@@ -64,7 +67,8 @@ const Event = ({ id, host, eventName, location, description, timeAndDate, handle
                 <div className = "eventFooter">
                     <small>   {timeDate} </small>
                     <div className='icons'>
-                        <Link className="createline" onClick={() => setEventPopup(true)}> <MdEditNote className = "editIcon" size = '1.5em'/> </Link>
+                        <MdVisibility className = "editIcon" onClick={() => setEventViewPopup(true)} size = '1.3em'/>
+                        <MdEditNote onClick={() => setEventPopup(true)} className = "editIcon" size = '1.5em'/>
                         <MdDeleteForever onClick={() => handleDeleteEvent(id)} className='deleteIcon' size='1.5em'/>
                     </div>
 
