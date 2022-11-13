@@ -35,6 +35,7 @@ const Dashboard = () => {
             for (const entry of data) {
                 const id = entry.id
                 const host = entry.host
+                const hostid = entry.hostid
                 const eventName = entry.name
                 const loc = entry.location
                 const desc = entry.description
@@ -46,7 +47,7 @@ const Dashboard = () => {
                 //console.log(desc)
                 //console.log(timeAndDate)
                 //newEvents = [...events, newEvent];
-                setEvents((events) => [...events, {id: id, host: host, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
+                setEvents((events) => [...events, {id: id, host: host, hostid: hostid, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
             }
         });
     }
@@ -72,7 +73,7 @@ const Dashboard = () => {
             const hoster = data.host
             const newEvent = {
                 id: test,
-                host: hoster,
+                host: context,
                 eventName: name,
                 location: loc,
                 description: desc,
@@ -81,6 +82,7 @@ const Dashboard = () => {
             const newEvents = [...events, newEvent];
             setEvents(newEvents);
         })
+        
     }
 
     const handleDelete = (id) => {

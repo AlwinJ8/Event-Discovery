@@ -11,6 +11,7 @@ const EventsList = ({
 					key={event.id}
 					id={event.id}
 					host={event.host}
+					hostid = {event.hostid}
 					eventName={event.eventName}
 					location={event.location}
                     description={event.description}

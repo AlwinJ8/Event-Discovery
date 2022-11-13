@@ -27,9 +27,35 @@ class UserServices {
 
     editEvent(userID, eventID, name, location, date, description) {
         const headers = {"CurrentID": userID}
-        const body = {"name": name, "location": location, "date": date, "description": description}
+        const body = {"name": name, "location": location, "date": date, "description": description} 
         return axios.put(USER_API_URL + "/events/" + eventID, body, {headers: headers}) 
     }
+
+    rsvpEvent(userID, eventID, status) {
+        const headers =  {"CurrentID": userID}
+        const body = {"status": status}
+        return axios.post(USER_API_URL + "/rsvp/" + eventID, body, {headers: headers})
+    }
+
+    getPeople(userID, eventID, status) {
+        const headers =  {"CurrentID": userID}
+        return axios.get(USER_API_URL + "/attendees/" + eventID + "?status=" + status, {headers: headers})
+    }
+
+    editRsvp(userID, eventID, status) {
+        const headers = {"CurrentID": userID}
+        const body = {"status": status}
+        return axios.put(USER_API_URL + "/rsvp/" + eventID, body, {headers: headers})
+    }
+
+    checkRsvp(userID, eventID) {
+        const headers = {"CurrentID": userID}
+        return axios.get(USER_API_URL + "/rsvp/check?eventid=" + eventID, {headers: headers})
+    }
+
+    //removeRsvp(userID, eventID, removedID) {
+
+    //}
 }
 
 export default new UserServices()

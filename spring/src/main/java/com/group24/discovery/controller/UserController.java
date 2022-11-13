@@ -69,6 +69,7 @@ public class UserController {
             HashMap<String, Object> temp = new HashMap<>();
             temp.put("id", e.getId());
             temp.put("name", e.getName());
+            temp.put("hostid", e.getHost().getID());
             temp.put("location", e.getLocation());
             temp.put("date", e.getDate());
             temp.put("description", e.getDescription());
@@ -247,13 +248,12 @@ public class UserController {
             userEventRepository.delete(userEvent);
             success = true;
         }
-
         return new ResponseEntity<>(Collections.singletonMap("success", success), headers, HttpStatus.OK);
     }
 
     /*
-     * Get attendees of event with given status. Pass eventid as path variable, pass status as one field json with attribute "status". Example request:
-     *  { "status": "Will Attend" } will return all users that RSVPed the given event with "Will Attend" status.
+     * Get attendees of event with given status. Pass eventid as path variable, pass status query string (use "+" for spaces). Example request:
+     *  GET http://localhost:8080/api/attendees/3?status=will+attend will return all users that RSVPed eventid 3 with "Will Attend" status.
      * 
      * Response: list of JSON objects with fields id, name, type. Example response:
      * 
@@ -271,15 +271,11 @@ public class UserController {
      * }
      */
     @GetMapping("/attendees/{id}")
-    public ResponseEntity<List<Object>> getAttendees(@RequestHeader("CurrentID") String currID, @PathVariable Long id, @RequestBody String json) throws JsonMappingException, JsonProcessingException {
+    public ResponseEntity<List<Object>> getAttendees(@RequestHeader("CurrentID") String currID, @PathVariable Long id, @RequestParam String status) throws JsonMappingException, JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("CurrentID", currID);
         Event event = eventRepository.findById(id).get();
         List<Object> attendees = new ArrayList<>();
-
-        // Parse Json
-        ObjectMapper mapper = new ObjectMapper();
-        String status = mapper.readTree(json).get("status").asText();
 
         List<UserEvent> list = userEventRepository.findByEventAndStatus(event, status);
         for (UserEvent u : list) {
@@ -295,7 +291,70 @@ public class UserController {
 
     }
     
+/*
+     * Invite user to an event. Pass eventid through path variable eventid and userid of who you want to invite through path variable userid.
+     * 
+     * Returns JSON {"success": true} if successful. If unsuccessful, returns JSON {"success": false, "reason": "reason here"}.
+     */
+    @PostMapping("/events/invite/{eventid}/{userid}")
+    public ResponseEntity<Map<String, Object>> inviteUser(@RequestHeader("CurrentID") String currID, @PathVariable Long eventid, @PathVariable Long userid) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("CurrentID", currID);
+        Event event = eventRepository.findById(eventid).get();
 
+        // Check if invited u ser is registered
+        if (! (userRepository.existsByid(userid))) {
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("success", false);
+            temp.put("reason", "Invited user is not registered");
+            return new ResponseEntity<>(temp, headers, HttpStatus.OK);
+        }
+
+        User user = userRepository.findById(Long.parseLong(currID)).get();
+        User invitedUser = userRepository.findById(userid).get();
+
+        // Check permissions
+        if (event.getHost().equals(user) || user.getType().equals("Admin")) {
+            UserEvent userEvent = new UserEvent(invitedUser, event, "Invited");
+            userEventRepository.save(userEvent);
+            return new ResponseEntity<>(Collections.singletonMap("success", true), headers, HttpStatus.OK);
+        } else {
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("success", false);
+            temp.put("reason", "You do not have permissions to invite users");
+            return new ResponseEntity<>(temp, headers, HttpStatus.OK);
+        }
+    }
+
+    /*
+     * Gets RSVP information of current user for given event. Pass event through query string eventid
+     * 
+     * Sample response: {"hasRSVP": "false", "rsvpStatus": "Not RSVPed"}
+     * Sample response 2: {"hasRSVP": "true", "rsvpStatus": "Will Attend"}
+     */
+    @GetMapping("/rsvp/check")
+    public ResponseEntity<Map<String, Object>> checkStatus(@RequestHeader("CurrentID") String currID, @RequestParam String eventid) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("CurrentID", currID);
+        Event event = eventRepository.findById(Long.parseLong(eventid)).get();
+        User user = userRepository.findById(Long.parseLong(currID)).get();
+
+        // Check if user RSVPed at all
+        if (! (userEventRepository.existsByUserAndEvent(user, event))) {
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("hasRSVP", false);
+            temp.put("rsvpStatus", "Not RSVPed");
+            return new ResponseEntity<>(temp, headers, HttpStatus.OK);
+        }
+
+        UserEvent userEvent = userEventRepository.findByUserAndEvent(user, event);
+        Map<String, Object> temp = new HashMap<>();
+        temp.put("hasRSVP", true);
+        temp.put("rsvpStatus", userEvent.getStatus());
+        return new ResponseEntity<>(temp, headers, HttpStatus.OK);
+    }
+
+    
     // Returns current attendance of event (number of people with "Will Attend" status)
     public int getCurrentAttendance(Event event) {
         return userEventRepository.findByEventAndStatus(event, "Will Attend").size();

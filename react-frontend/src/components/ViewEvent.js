@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useContext} from 'react';
 import { Context } from "./Context";
 import UserServices from '../services/UserServices';
 import { MdArrowBack } from 'react-icons/md';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 
 //Use this function to remove a user from list on frontend
@@ -20,6 +21,8 @@ function ViewEvent(props) {
     let [eventDesc, setEventDesc] = useState(props.desc);
     let [eventName, setEventName] = useState(props.name);
     const [eventLoc, setEventLoc] = useState(props.loc);
+    const [eventID, setEventID] = useState(props.id)
+    const [eventHost, setEventHost] = useState(props.host)
     const [eventTimeDate, setEventTimeDate] = useState(props.timeDate);
     const [open, setOpen] = useState(false);
     const [statusState, setStatusState] = useState("Will Attend")
@@ -37,30 +40,98 @@ function ViewEvent(props) {
     const [wontAttendList, setwontAttendList] = useState([]);
     const [lolList, setlolList] = useState([]);
 
+    useEffect(() => {
+        getPeeps();
+        getMPeeps();
+        getNPeeps();
+    }, []);
+
+    const getPeeps = () => {
+        UserServices.getPeople(context, eventID, "Will Attend")
+        .then((response) => response.data)
+        .then((data) => {
+            let add = []
+            for (const entry of data) {
+                add = [...add, entry.id]
+            }
+            setwillAttendList([...willAttendList, ...add])
+        }); 
+    }
+
+    const getMPeeps = () => {
+        UserServices.getPeople(context, eventID, "Perhaps")
+        .then((response) => response.data)
+        .then((data) => {
+            let add1 = []
+            for (const entry of data) {
+                add1 = [...add1, entry.id]
+            }
+            setperhapsList([...perhapsList, ...add1])
+        }); 
+    }
+
+    const getNPeeps = () => {
+        UserServices.getPeople(context, eventID, "Won't Attend")
+        .then((response) => response.data)
+        .then((data) => {
+            let add2 = []
+            for (const entry of data) {
+                add2 = [...add2, entry.id]
+            }
+            setwontAttendList([...wontAttendList, ...add2])
+        }); 
+    }
+    
+
     const handleWillAttend = () => {
+        UserServices.checkRsvp(context, eventID)
+        .then((response) => response.data)
+        .then((data) => {
+            if (data.hasRSVP == true) {
+                UserServices.editRsvp(context, eventID, "Will Attend")
+            } else {
+                UserServices.rsvpEvent(context, eventID, "Will Attend")
+            }
+        });
         setwillAttendList(removeItem(willAttendList, context))
         setperhapsList(removeItem(perhapsList, context))
         setwontAttendList(removeItem(wontAttendList, context))
         setlolList(removeItem(lolList, context))
-
         const newWillAttendList = [...willAttendList, context];
         setwillAttendList(newWillAttendList)
     }
+
     const handlePerhaps = () => {
+        UserServices.checkRsvp(context, eventID)
+        .then((response) => response.data)
+        .then((data) => {
+            if (data.hasRSVP == true) {
+                UserServices.editRsvp(context, eventID, "Perhaps")
+            } else {
+                UserServices.rsvpEvent(context, eventID, "Perhaps")
+            }
+        });
         setwillAttendList(removeItem(willAttendList, context))
         setperhapsList(removeItem(perhapsList, context))
         setwontAttendList(removeItem(wontAttendList, context))
         setlolList(removeItem(lolList, context))
-
         const newPerhapsList = [...perhapsList, context];
         setperhapsList(newPerhapsList)
     }
     const handleWontAttend = () => {
+        UserServices.checkRsvp(context, eventID)
+        .then((response) => response.data)
+        .then((data) => {
+            if (data.hasRSVP == true) {
+                UserServices.editRsvp(context, eventID, "Won't Attend")
+            } else {
+                UserServices.rsvpEvent(context, eventID, "Won't Attend")
+            }
+        });
         setwillAttendList(removeItem(willAttendList, context))
         setperhapsList(removeItem(perhapsList, context))
         setwontAttendList(removeItem(wontAttendList, context))
         setlolList(removeItem(lolList, context))
-
         const newWontAttendList = [...wontAttendList, context];
         setwontAttendList(newWontAttendList)
     }
@@ -69,7 +140,6 @@ function ViewEvent(props) {
         setperhapsList(removeItem(perhapsList, context))
         setwontAttendList(removeItem(wontAttendList, context))
         setlolList(removeItem(lolList, context))
-
         const newLolList = [...lolList, context];
         setlolList(newLolList)
     }
@@ -90,7 +160,7 @@ function ViewEvent(props) {
                             cols='10'
                         >{eventLoc}</h5>
                     </div>
-                    <h5>Event Host: User Who Created Event</h5>
+                    <h5>Event Host: {eventHost} </h5>
                     <small
                         rows='8'
                         cols='10'
@@ -132,11 +202,16 @@ function ViewEvent(props) {
                 <div className='headerTing'>
                     <div className='twoButtons'>
                         <div className="inviteOnlyButton" onClick={()=>{
-                            setisInviteOnly(!isInviteOnly); //Should only work if user is host of event
+                            if (props.hostid == context) {
+                                setisInviteOnly(!isInviteOnly);
+                            } else {
+                                alert("You dont have permissions to do this!")
+                            }
                             }}>Toggle Invite-Only
                         </div>
                         <div className="inviteOnlyButton" onClick={()=>{
-                            setIsCapacityPromptOpen(!isCapacityPromptOpen) //Should only work if user is host of event
+                            setIsCapacityPromptOpen(!isCapacityPromptOpen)
+                            alert(isCapacityPromptOpen) //Should only work if user is host of event
                             }}>Set Capacity
                         </div>
                     </div>
