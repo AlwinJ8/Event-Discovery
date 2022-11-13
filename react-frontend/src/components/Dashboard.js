@@ -40,6 +40,8 @@ const Dashboard = () => {
                 const loc = entry.location
                 const desc = entry.description
                 const timeAndDate = entry.date
+                const capacity = entry.capacity
+                const inviteOnly = entry.inviteOnly
                 //console.log(newEvent)
                 //console.log(id)
                 //console.log(eventName)
@@ -47,7 +49,7 @@ const Dashboard = () => {
                 //console.log(desc)
                 //console.log(timeAndDate)
                 //newEvents = [...events, newEvent];
-                setEvents((events) => [...events, {id: id, host: host, hostid: hostid, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
+                setEvents((events) => [...events, {id: id, host: host, hostid: hostid, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate, capacity: capacity, inviteOnly: inviteOnly}])
             }
         });
     }
@@ -66,7 +68,7 @@ const Dashboard = () => {
     }*/
 
     const addEvent = (name, loc, desc, timeDate) => {
-        UserServices.addEvent(context, name, loc, timeDate, desc)
+        UserServices.addEvent(context, name, loc, timeDate, desc, false, 2330)
         .then((response) => response.data)
         .then((data) => {
             const test = data.id
@@ -77,7 +79,9 @@ const Dashboard = () => {
                 eventName: name,
                 location: loc,
                 description: desc,
-                timeAndDate: timeDate
+                timeAndDate: timeDate,
+                capacity: 2330,
+                inviteOnly: false
             }
             const newEvents = [...events, newEvent];
             setEvents(newEvents);

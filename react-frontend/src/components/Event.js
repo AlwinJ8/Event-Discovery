@@ -17,7 +17,7 @@ import '../event.css';
 import { Context } from './Context';
 
 import { render } from '@testing-library/react';
-const Event = ({ id, host, hostid, eventName, location, description, timeAndDate, handleDeleteEvent }) => {
+const Event = ({ id, host, hostid, eventName, location, description, timeAndDate, capacity, inviteOnly, handleDeleteEvent }) => {
     const [context, setContext] = useContext(Context);
     const [editEventPopup, setEventPopup] = useState(false);
     const [eventViewPopup, setEventViewPopup] = useState(false);
@@ -55,8 +55,8 @@ const Event = ({ id, host, hostid, eventName, location, description, timeAndDate
         <div key= {id} className="event" >
             <div className='topPart'>
                 <div className = "eventHeader">
-                    <ViewEvent  id={id} desc={description} host = {host} hostid = {hostid} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventViewPopup} isShown={eventViewPopup} handleEditEvent={editEvent}/>
-                    <EditEvent  id={id} desc={description} host = {host} hostid = {hostid} name={eventName} loc={location} timeDate={timeAndDate} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
+                    <ViewEvent  id={id} desc={description} host = {host} hostid = {hostid} name={eventName} loc={location} timeDate={timeAndDate} capacity={capacity} inviteOnly={inviteOnly} trigger={setEventViewPopup} isShown={eventViewPopup} handleEditEvent={editEvent}/>
+                    <EditEvent  id={id} desc={description} host = {host} hostid = {hostid} name={eventName} loc={location} timeDate={timeAndDate} capacity={capacity} inviteOnly={inviteOnly} trigger={setEventPopup} isShown={editEventPopup} handleEditEvent={editEvent}/>
                     <EventConfirmation trigger={setEditConfirmationPopup} isShown={editConfirmationPopup}/>
                     <h4 className='hh'>{name}</h4>
                     <h4 className='hh'>{loc}</h4>

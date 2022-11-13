@@ -76,7 +76,7 @@ public class UserController {
             temp.put("host", e.getHost().getName());
             temp.put("capacity", e.getCapacity());
             temp.put("currentAttendance", this.getCurrentAttendance(e));
-            temp.put("inviteOnly", e.isIniviteOnly());
+            temp.put("inviteOnly", e.isInviteOnly());
             result.add(temp);
         }
         HttpHeaders headers = new HttpHeaders();
@@ -123,6 +123,8 @@ public class UserController {
             event.setLocation(eventDetails.getLocation());
             event.setDate(eventDetails.getDate());
             event.setDescription(eventDetails.getDescription());
+            event.setInviteOnly(eventDetails.isInviteOnly());
+            event.setCapacity(eventDetails.getCapacity());
     
             Event updatedEvent = eventRepository.save(event);
             List<Object> list = new ArrayList<Object>();
@@ -178,7 +180,7 @@ public class UserController {
         String status = mapper.readTree(json).get("status").asText();
 
         // Check if user is invited if event is invite only
-        if (event.isIniviteOnly()) {
+        if (event.isInviteOnly()) {
             if (userEventRepository.countByUserAndEvent(user, event) == 0) {
                 canAttend = false;
                 reason = "Not Invited";

@@ -26,7 +26,7 @@ function ViewEvent(props) {
     const [eventTimeDate, setEventTimeDate] = useState(props.timeDate);
     const [open, setOpen] = useState(false);
     const [statusState, setStatusState] = useState("Will Attend")
-    const [isInviteOnly, setisInviteOnly] = useState(false) //use for invite only
+    const [isInviteOnly, setisInviteOnly] = useState(props.inviteOnly); //use for invite only
     const [guestCapacity, setGuestCapacity] = useState(10000); //initial cap is set at 10000
     const [isCapacityPromptOpen, setIsCapacityPromptOpen] = useState(false)
 
@@ -44,6 +44,7 @@ function ViewEvent(props) {
         getPeeps();
         getMPeeps();
         getNPeeps();
+        getLPeeps();
     }, []);
 
     const getPeeps = () => {
@@ -79,6 +80,18 @@ function ViewEvent(props) {
                 add2 = [...add2, entry.id]
             }
             setwontAttendList([...wontAttendList, ...add2])
+        });
+    }
+
+    const getLPeeps = () => {
+        UserServices.getPeople(context, eventID, "No, lol")
+        .then((response) => response.data)
+        .then((data) => {
+            let add3 = []
+            for (const entry of data) {
+                add3 = [...add3, entry.id]
+            }
+            setlolList([...lolList, ...add3])
         });
     }
 
@@ -126,25 +139,35 @@ function ViewEvent(props) {
                 UserServices.editRsvp(context, eventID, "Won't Attend")
             } else {
                 UserServices.rsvpEvent(context, eventID, "Won't Attend")
+                .then((response) => response.data)
+                .then((data) => {
+                    if (data.size() == 2) {
+                        console.log("lalalala")
+                        alert("You can't register for this because you are bad")
+                    } else {
+                        console.log("asdfasdfasdf")
+                        alert("You have successfully given your rsvp.")
+                        setwillAttendList(removeItem(willAttendList, context))
+                        setperhapsList(removeItem(perhapsList, context))
+                        setwontAttendList(removeItem(wontAttendList, context))
+                        setlolList(removeItem(lolList, context))
+                        const newWontAttendList = [...wontAttendList, context];
+                        setwontAttendList(newWontAttendList)
+                    }
+                }); 
             }
         });
-        setwillAttendList(removeItem(willAttendList, context))
-        setperhapsList(removeItem(perhapsList, context))
-        setwontAttendList(removeItem(wontAttendList, context))
-        setlolList(removeItem(lolList, context))
-        const newWontAttendList = [...wontAttendList, context];
-        setwontAttendList(newWontAttendList)
     }
     const handleLol = () => {
-        // UserServices.checkRsvp(context, eventID)
-        // .then((response) => response.data)
-        // .then((data) => {
-        //     if (data.hasRSVP == true) {
-        //         UserServices.editRsvp(context, eventID, "Perhaps")
-        //     } else {
-        //         UserServices.rsvpEvent(context, eventID, "Perhaps")
-        //     }
-        // });
+        UserServices.checkRsvp(context, eventID)
+        .then((response) => response.data)
+        .then((data) => {
+            if (data.hasRSVP == true) {
+                UserServices.editRsvp(context, eventID, "No, lol")
+            } else {
+                UserServices.rsvpEvent(context, eventID, "No, lol")
+            }
+        });
         setwillAttendList(removeItem(willAttendList, context))
         setperhapsList(removeItem(perhapsList, context))
         setwontAttendList(removeItem(wontAttendList, context))
@@ -153,10 +176,18 @@ function ViewEvent(props) {
         setlolList(newLolList)
     }
     const handleKicked = (user) => {
-        setwillAttendList(removeItem(willAttendList, user))
-        setperhapsList(removeItem(perhapsList, user))
-        setwontAttendList(removeItem(wontAttendList, user))
-        setlolList(removeItem(lolList, user))
+        UserServices.removeRsvp(context, eventID, user)
+        .then((response) => response.data)
+        .then((data) => {
+            if (data.success == true) {
+                setwillAttendList(removeItem(willAttendList, user))
+                setperhapsList(removeItem(perhapsList, user))
+                setwontAttendList(removeItem(wontAttendList, user))
+                setlolList(removeItem(lolList, user))
+            } else {
+                alert("You don't have permisisons")
+            }
+        });
     }
 
     return (props.isShown) ? (
@@ -218,11 +249,12 @@ function ViewEvent(props) {
                     <div className='twoButtons'>
                         <div className="inviteOnlyButton" onClick={()=>{
                             if (props.hostid == context) {
-                                setisInviteOnly(!isInviteOnly);
+                                UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc, !isInviteOnly, props.capacity)
+                                setisInviteOnly(!isInviteOnly)
                             } else {
                                 alert("You dont have permissions to do this!")
                             }
-                            }}>Toggle Invite-Only
+                            }}>Invite Only: {String(isInviteOnly)}  
                         </div>
                         <div className="inviteOnlyButton" onClick={()=>{
                             setIsCapacityPromptOpen(!isCapacityPromptOpen)

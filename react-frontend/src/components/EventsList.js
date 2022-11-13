@@ -16,6 +16,8 @@ const EventsList = ({
 					location={event.location}
                     description={event.description}
                     timeAndDate={event.timeAndDate}
+					capacity={event.capacity}
+					inviteOnly ={event.inviteOnly}
 					handleDeleteEvent= {handleDeleteEvent}
 				/>
 			))}
