@@ -55,7 +55,7 @@ function ViewEvent(props) {
                 add = [...add, entry.id]
             }
             setwillAttendList([...willAttendList, ...add])
-        }); 
+        });
     }
 
     const getMPeeps = () => {
@@ -67,7 +67,7 @@ function ViewEvent(props) {
                 add1 = [...add1, entry.id]
             }
             setperhapsList([...perhapsList, ...add1])
-        }); 
+        });
     }
 
     const getNPeeps = () => {
@@ -79,9 +79,9 @@ function ViewEvent(props) {
                 add2 = [...add2, entry.id]
             }
             setwontAttendList([...wontAttendList, ...add2])
-        }); 
+        });
     }
-    
+
 
     const handleWillAttend = () => {
         UserServices.checkRsvp(context, eventID)
@@ -135,13 +135,28 @@ function ViewEvent(props) {
         const newWontAttendList = [...wontAttendList, context];
         setwontAttendList(newWontAttendList)
     }
+    const handleLol = () => {
+        // UserServices.checkRsvp(context, eventID)
+        // .then((response) => response.data)
+        // .then((data) => {
+        //     if (data.hasRSVP == true) {
+        //         UserServices.editRsvp(context, eventID, "Perhaps")
+        //     } else {
+        //         UserServices.rsvpEvent(context, eventID, "Perhaps")
+        //     }
+        // });
+        setwillAttendList(removeItem(willAttendList, context))
+        setperhapsList(removeItem(perhapsList, context))
+        setwontAttendList(removeItem(wontAttendList, context))
+        setlolList(removeItem(lolList, context))
+        const newLolList = [...lolList, context];
+        setlolList(newLolList)
+    }
     const handleKicked = (user) => {
         setwillAttendList(removeItem(willAttendList, user))
         setperhapsList(removeItem(perhapsList, user))
         setwontAttendList(removeItem(wontAttendList, user))
         setlolList(removeItem(lolList, user))
-        const newLolList = [...lolList, user];
-        setlolList(newLolList)
     }
 
     return (props.isShown) ? (
@@ -178,6 +193,7 @@ function ViewEvent(props) {
                             <small className='status' onClick={handleWillAttend}>Will Attend</small>
                             <small className='status' onClick={handlePerhaps}>Perhaps</small>
                             <small className='status' onClick={handleWontAttend}>Won't Attend</small>
+                            <small className='status' onClick={handleLol}>Lol, no</small>
                         </div>
                     </div>
                 </div>
@@ -220,7 +236,7 @@ function ViewEvent(props) {
                     <div className={statusState === "Will Attend" ? "selected" : "button"}  onClick={()=>{setStatusState("Will Attend")}}>Will Attend </div>
                     <div className={statusState === "Perhaps" ? "selected" : "button"} onClick={()=>{setStatusState("Perhaps")}}>Perhaps</div>
                     <div className={statusState === "Won't Attend" ? "selected" : "button"} onClick={()=>{setStatusState("Won't Attend")}}>Won't Attend</div>
-                    <div className={statusState === "No, lol" ? "selected" : "button"} onClick={()=>{setStatusState("No, lol")}}>Kicked</div>
+                    <div className={statusState === "No, lol" ? "selected" : "button"} onClick={()=>{setStatusState("No, lol")}}>No, lol</div>
                 </div>
                 <div className='displayedList'>
                     {statusState == "Will Attend" ? <text className='alist'>{willAttendList.map((user) => (
