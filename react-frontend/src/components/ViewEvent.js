@@ -135,15 +135,14 @@ function ViewEvent(props) {
         const newWontAttendList = [...wontAttendList, context];
         setwontAttendList(newWontAttendList)
     }
-    const handleKicked = () => {
-        setwillAttendList(removeItem(willAttendList, context))
-        setperhapsList(removeItem(perhapsList, context))
-        setwontAttendList(removeItem(wontAttendList, context))
-        setlolList(removeItem(lolList, context))
-        const newLolList = [...lolList, context];
+    const handleKicked = (user) => {
+        setwillAttendList(removeItem(willAttendList, user))
+        setperhapsList(removeItem(perhapsList, user))
+        setwontAttendList(removeItem(wontAttendList, user))
+        setlolList(removeItem(lolList, user))
+        const newLolList = [...lolList, user];
         setlolList(newLolList)
     }
-
 
     return (props.isShown) ? (
         <div className="popup">
@@ -228,7 +227,7 @@ function ViewEvent(props) {
                             <div className='alistCell'>
                                 {user}
                                 <div className="removeButton" onClick={()=>{
-                                    handleKicked()
+                                    handleKicked(user)
                                 }}>Remove Attendee</div>
                             </div>
                         ))}
@@ -238,7 +237,7 @@ function ViewEvent(props) {
                             <div className='alistCell'>
                                 {user}
                                 <div className="removeButton" onClick={()=>{
-                                    handleKicked()
+                                    handleKicked(user)
                                 }}>Remove Attendee</div>
                             </div>
                         ))}
