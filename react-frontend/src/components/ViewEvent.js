@@ -36,9 +36,16 @@ function ViewEvent(props) {
         setGuestCapacity("");
     };
 
+    const [inviteUser, setInviteUser] = useState(""); //initial cap is set at 10000
+    const [invitedUsers, setInvitedUsers] = useState([]);
+    const handleSubmit2 = () => {
+        setInvitedUsers([...invitedUsers, parseInt(inviteUser)])
+        setInviteUser("");
+    };
 
 
     const [isCapacityPromptOpen, setIsCapacityPromptOpen] = useState(false)
+    const [isInvitePrompt, setIsInvitePromptOpne] = useState(false)
 
     const handleExitClick = () => {
         props.trigger(false);
@@ -266,9 +273,31 @@ function ViewEvent(props) {
                             }
                             }}>Invite Only: {String(isInviteOnly)}
                         </div>
+
+                        <div className="inviteOnlyButton" onClick={()=>{
+                            setIsInvitePromptOpne(!setIsInvitePromptOpne)
+                            //alert(isCapacityPromptOpen) //Should only work if user is host of event
+                            }}>Invite User
+                        </div>
+
+                        {isInvitePrompt ?
+                            <div className = 'promptDiv'>
+                                <textarea className='capacityPrompt'
+                                    required
+                                    placeholder='User ID'
+                                    value = {inviteUser}
+                                    onChange = {(e) => setInviteUser(e.target.value)}>
+                                </textarea>
+                                <div className="removeButton" onClick={()=>{
+                                        handleSubmit2()
+                                        }}>Submit
+                                </div>
+                            </div>
+                            : null}
+
                         <div className="inviteOnlyButton" onClick={()=>{
                             setIsCapacityPromptOpen(!isCapacityPromptOpen)
-                            alert(isCapacityPromptOpen) //Should only work if user is host of event
+                            //alert(isCapacityPromptOpen) //Should only work if user is host of event
                             }}>Set Capacity
                         </div>
 
