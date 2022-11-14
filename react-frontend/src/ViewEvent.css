@@ -267,3 +267,23 @@
     display: flex;
     justify-content: space-between;
 }
+
+.promptDiv {
+    position: absolute;
+    background-color: white ;
+    display: flex;
+    margin-left: 200px;
+    max-height: 25px;
+}
+
+.capacityPrompt {
+    margin: 1px;
+    color: white;
+    outline: white;
+    border: none;
+    resize: none;
+}
+
+.capacityPrompt:focus {
+    outline: none;
+}

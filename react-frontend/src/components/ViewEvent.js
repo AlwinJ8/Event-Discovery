@@ -27,7 +27,17 @@ function ViewEvent(props) {
     const [open, setOpen] = useState(false);
     const [statusState, setStatusState] = useState("Will Attend")
     const [isInviteOnly, setisInviteOnly] = useState(props.inviteOnly); //use for invite only
-    const [guestCapacity, setGuestCapacity] = useState(10000); //initial cap is set at 10000
+
+
+    const [guestCapacity, setGuestCapacity] = useState(""); //initial cap is set at 10000
+    const [permGuestCapacity, setPermGuestCapacity] = useState(10000); // This is the actual guestCapacity
+    const handleSubmit = () => {
+        setPermGuestCapacity(parseInt(guestCapacity));
+        setGuestCapacity("");
+    };
+
+
+
     const [isCapacityPromptOpen, setIsCapacityPromptOpen] = useState(false)
 
     const handleExitClick = () => {
@@ -154,7 +164,7 @@ function ViewEvent(props) {
                         const newWontAttendList = [...wontAttendList, context];
                         setwontAttendList(newWontAttendList)
                     }
-                }); 
+                });
             }
         });
     }
@@ -243,7 +253,7 @@ function ViewEvent(props) {
                     <h5
                         rows='1'
                         cols='10'
-                    >Guest Capacity: {guestCapacity == 10000 ? "None" : {guestCapacity}}</h5>
+                    >Guest Capacity: {permGuestCapacity == 10000 ? "None" : {permGuestCapacity}}</h5>
                 </div>
                 <div className='headerTing'>
                     <div className='twoButtons'>
@@ -254,13 +264,28 @@ function ViewEvent(props) {
                             } else {
                                 alert("You dont have permissions to do this!")
                             }
-                            }}>Invite Only: {String(isInviteOnly)}  
+                            }}>Invite Only: {String(isInviteOnly)}
                         </div>
                         <div className="inviteOnlyButton" onClick={()=>{
                             setIsCapacityPromptOpen(!isCapacityPromptOpen)
                             alert(isCapacityPromptOpen) //Should only work if user is host of event
                             }}>Set Capacity
                         </div>
+
+                        {isCapacityPromptOpen ?
+                            <div className = 'promptDiv'>
+                                <textarea className='capacityPrompt'
+                                    required
+                                    value = {guestCapacity}
+                                    onChange = {(e) => setGuestCapacity(e.target.value)}>
+                                </textarea>
+                                <div className="removeButton" onClick={()=>{
+                                        handleSubmit()
+                                        }}>Submit
+                                </div>
+                            </div>
+                            : null}
+
                     </div>
                     <h5 className='sometext' > View Attendees by Status </h5>
                 </div>
