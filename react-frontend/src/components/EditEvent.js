@@ -27,7 +27,7 @@ let useClickOutside = (handler) => {
 
 function EditEvent(props) {
     const [context, setContext] = useContext(Context);
-    
+
     let [eventDesc, setEventDesc] = useState(props.desc);
     const handleChangeDesc = (event) => {
         setEventDesc(event.target.value);
@@ -49,7 +49,7 @@ function EditEvent(props) {
     };
 
     const handleSaveClick = () => {
-        UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc)
+        UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc, props.inviteOnly, props.capacity)
         .then((response) => response.data)
         .then((data) => {
             console.log(data.length)

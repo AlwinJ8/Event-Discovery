@@ -8,17 +8,18 @@ import Event from './Event'
 import AddEvent from './AddEvent';
 import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from './Context';
 import UserServices from '../services/UserServices';
 import Pagination from './Pagination';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(10);
+    const [postsPerPage, setPostsPerPage] = useState(12);
     const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = events.slice(firstPostIndex, lastPostIndex);
@@ -35,10 +36,13 @@ const Dashboard = () => {
             for (const entry of data) {
                 const id = entry.id
                 const host = entry.host
+                const hostid = entry.hostid
                 const eventName = entry.name
                 const loc = entry.location
                 const desc = entry.description
                 const timeAndDate = entry.date
+                const capacity = entry.capacity
+                const inviteOnly = entry.inviteOnly
                 //console.log(newEvent)
                 //console.log(id)
                 //console.log(eventName)
@@ -46,7 +50,7 @@ const Dashboard = () => {
                 //console.log(desc)
                 //console.log(timeAndDate)
                 //newEvents = [...events, newEvent];
-                setEvents((events) => [...events, {id: id, host: host, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate}])
+                setEvents((events) => [...events, {id: id, host: host, hostid: hostid, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate, capacity: capacity, inviteOnly: inviteOnly}])
             }
         });
     }
@@ -65,22 +69,25 @@ const Dashboard = () => {
     }*/
 
     const addEvent = (name, loc, desc, timeDate) => {
-        UserServices.addEvent(context, name, loc, timeDate, desc)
+        UserServices.addEvent(context, name, loc, timeDate, desc, false, 2330)
         .then((response) => response.data)
         .then((data) => {
             const test = data.id
             const hoster = data.host
             const newEvent = {
                 id: test,
-                host: hoster,
+                host: context,
                 eventName: name,
                 location: loc,
                 description: desc,
-                timeAndDate: timeDate
+                timeAndDate: timeDate,
+                capacity: 2330,
+                inviteOnly: false
             }
             const newEvents = [...events, newEvent];
             setEvents(newEvents);
         })
+        
     }
 
     const handleDelete = (id) => {
@@ -104,6 +111,7 @@ const Dashboard = () => {
                 <img src={Logo} />
             </div>
             <div className="rightSide">
+                <Link className="Logout" to="/"> Logout </Link>
                 <Link className="createline" onClick={() => setEventPopup(true)}> Create Event </Link>
                 <Link className="filterline" to=""> Filter Event </Link>
 

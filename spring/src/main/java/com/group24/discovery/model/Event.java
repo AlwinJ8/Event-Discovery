@@ -42,7 +42,7 @@ public class Event {
     private int capacity;
 
     @Column(name = "inviteonly", columnDefinition = "BIT", length = 1)
-    private boolean iniviteOnly;
+    private boolean inviteOnly;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hostid")
@@ -66,7 +66,7 @@ public class Event {
         this.host = host;
         this.description = description;
         this.capacity = capacity;
-        this.iniviteOnly = inviteonly;
+        this.inviteOnly = inviteonly;
         this.usersAttending = new HashSet<>();
     }
 
@@ -77,7 +77,7 @@ public class Event {
         this.date = date;
         this.description = description;
         this.capacity = capacity;
-        this.iniviteOnly = inviteonly;
+        this.inviteOnly = inviteonly;
         this.usersAttending = new HashSet<>();
     }
 
@@ -124,11 +124,11 @@ public class Event {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
-    public boolean isIniviteOnly() {
-        return iniviteOnly;
+    public boolean isInviteOnly() {
+        return inviteOnly;
     }
-    public void setIniviteOnly(boolean iniviteOnly) {
-        this.iniviteOnly = iniviteOnly;
+    public void setInviteOnly(boolean inviteOnly) {
+        this.inviteOnly = inviteOnly;
     }
     public Set<UserEvent> getUsersAttending() {
         return usersAttending;
