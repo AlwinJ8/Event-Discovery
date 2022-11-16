@@ -184,12 +184,13 @@ public class UserController {
             if (userEventRepository.countByUserAndEvent(user, event) == 0) {
                 canAttend = false;
                 reason = "Not Invited";
-            } else if (this.getCurrentAttendance(event) == event.getCapacity()){
-                reason = "Event Full";
             } else {
                 UserEvent userEvent = new UserEvent(user, event, status);
                 userEventRepository.save(userEvent);
             }
+        } else if (this.getCurrentAttendance(event) >= event.getCapacity()) {
+            canAttend = false; 
+            reason = "No space";
         } else {
             UserEvent userEvent = new UserEvent(user, event, status);
             userEventRepository.save(userEvent);

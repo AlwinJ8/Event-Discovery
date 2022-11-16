@@ -8,12 +8,13 @@ import Event from './Event'
 import AddEvent from './AddEvent';
 import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from './Context';
 import UserServices from '../services/UserServices';
 import Pagination from './Pagination';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
@@ -110,6 +111,7 @@ const Dashboard = () => {
                 <img src={Logo} />
             </div>
             <div className="rightSide">
+                <Link className="Logout" to="/"> Logout </Link>
                 <Link className="createline" onClick={() => setEventPopup(true)}> Create Event </Link>
                 <Link className="filterline" to=""> Filter Event </Link>
 

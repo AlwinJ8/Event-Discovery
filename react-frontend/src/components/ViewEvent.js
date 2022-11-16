@@ -29,23 +29,22 @@ function ViewEvent(props) {
     const [isInviteOnly, setisInviteOnly] = useState(props.inviteOnly); //use for invite only
 
 
-    const [guestCapacity, setGuestCapacity] = useState(""); //initial cap is set at 10000
-    const [permGuestCapacity, setPermGuestCapacity] = useState(10000); // This is the actual guestCapacity
+    const [guestCapacity, setGuestCapacity] = useState(props.capacity); //initial cap is set at 10000
     const handleSubmit = () => {
-        setPermGuestCapacity(parseInt(guestCapacity));
-        setGuestCapacity("");
+        setGuestCapacity(parseInt(guestCapacity));
+        UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc, isInviteOnly, guestCapacity)
     };
 
     const [inviteUser, setInviteUser] = useState(""); //initial cap is set at 10000
     const [invitedUsers, setInvitedUsers] = useState([]);
     const handleSubmit2 = () => {
         setInvitedUsers([...invitedUsers, parseInt(inviteUser)])
-        setInviteUser("");
+        UserServices.inviteUser(context, eventID, inviteUser);
     };
 
 
     const [isCapacityPromptOpen, setIsCapacityPromptOpen] = useState(false)
-    const [isInvitePrompt, setIsInvitePromptOpne] = useState(false)
+    const [isInvitePrompt, setIsInvitePromptOne] = useState(false)
 
     const handleExitClick = () => {
         props.trigger(false);
@@ -119,16 +118,28 @@ function ViewEvent(props) {
         .then((data) => {
             if (data.hasRSVP == true) {
                 UserServices.editRsvp(context, eventID, "Will Attend")
+                alert("You are newly registered")
+                return 
             } else {
                 UserServices.rsvpEvent(context, eventID, "Will Attend")
+                .then((response) => response.data)
+                .then((data) => {
+                    if (!data.rsvpSuccess) {
+                        console.log("lalalala")
+                        alert("You can't register for this because: " + data.reason)
+                    } else {
+                        console.log("asdfasdfasdf")
+                        alert("You have successfully given your rsvp.")
+                        setwillAttendList(removeItem(willAttendList, context))
+                        setperhapsList(removeItem(perhapsList, context))
+                        setwontAttendList(removeItem(wontAttendList, context))
+                        setlolList(removeItem(lolList, context))
+                        const newWillAttendList = [...willAttendList, context];
+                        setwillAttendList(newWillAttendList)
+                    }
+                });
             }
         });
-        setwillAttendList(removeItem(willAttendList, context))
-        setperhapsList(removeItem(perhapsList, context))
-        setwontAttendList(removeItem(wontAttendList, context))
-        setlolList(removeItem(lolList, context))
-        const newWillAttendList = [...willAttendList, context];
-        setwillAttendList(newWillAttendList)
     }
 
     const handlePerhaps = () => {
@@ -137,30 +148,45 @@ function ViewEvent(props) {
         .then((data) => {
             if (data.hasRSVP == true) {
                 UserServices.editRsvp(context, eventID, "Perhaps")
+                alert("You are newly registered")
+                return 
             } else {
                 UserServices.rsvpEvent(context, eventID, "Perhaps")
+                .then((response) => response.data)
+                .then((data) => {
+                    if (!data.rsvpSuccess) {
+                        console.log("lalalala")
+                        alert("You can't register for this because: " + data.reason)
+                    } else {
+                        console.log("asdfasdfasdf")
+                        alert("You have successfully given your rsvp.")
+                        setwillAttendList(removeItem(willAttendList, context))
+                        setperhapsList(removeItem(perhapsList, context))
+                        setwontAttendList(removeItem(wontAttendList, context))
+                        setlolList(removeItem(lolList, context))
+                        const newPerhapsList = [...perhapsList, context];
+                        setperhapsList(newPerhapsList)
+                    }
+                });
             }
         });
-        setwillAttendList(removeItem(willAttendList, context))
-        setperhapsList(removeItem(perhapsList, context))
-        setwontAttendList(removeItem(wontAttendList, context))
-        setlolList(removeItem(lolList, context))
-        const newPerhapsList = [...perhapsList, context];
-        setperhapsList(newPerhapsList)
     }
+
     const handleWontAttend = () => {
         UserServices.checkRsvp(context, eventID)
         .then((response) => response.data)
         .then((data) => {
             if (data.hasRSVP == true) {
-                UserServices.editRsvp(context, eventID, "Won't Attend")
+                UserServices.editRsvp(context, eventID, "Will Attend")
+                alert("You are newly registered")
+                return 
             } else {
-                UserServices.rsvpEvent(context, eventID, "Won't Attend")
+                UserServices.rsvpEvent(context, eventID, "Will Attend")
                 .then((response) => response.data)
                 .then((data) => {
-                    if (data.size() == 2) {
+                    if (!data.rsvpSuccess) {
                         console.log("lalalala")
-                        alert("You can't register for this because you are bad")
+                        alert("You can't register for this because: " + data.reason)
                     } else {
                         console.log("asdfasdfasdf")
                         alert("You have successfully given your rsvp.")
@@ -181,17 +207,30 @@ function ViewEvent(props) {
         .then((data) => {
             if (data.hasRSVP == true) {
                 UserServices.editRsvp(context, eventID, "No, lol")
+                alert("You are newly registered")
+                return 
             } else {
                 UserServices.rsvpEvent(context, eventID, "No, lol")
+                .then((response) => response.data)
+                .then((data) => {
+                    if (!data.rsvpSuccess) {
+                        console.log("lalalala")
+                        alert("You can't register for this because: " + data.reason)
+                    } else {
+                        console.log("asdfasdfasdf")
+                        alert("You have successfully given your rsvp.")
+                        setwillAttendList(removeItem(willAttendList, context))
+                        setperhapsList(removeItem(perhapsList, context))
+                        setwontAttendList(removeItem(wontAttendList, context))
+                        setlolList(removeItem(lolList, context))
+                        const newLolList = [...lolList, context];
+                        setlolList(newLolList)
+                    }
+                });
             }
         });
-        setwillAttendList(removeItem(willAttendList, context))
-        setperhapsList(removeItem(perhapsList, context))
-        setwontAttendList(removeItem(wontAttendList, context))
-        setlolList(removeItem(lolList, context))
-        const newLolList = [...lolList, context];
-        setlolList(newLolList)
     }
+
     const handleKicked = (user) => {
         UserServices.removeRsvp(context, eventID, user)
         .then((response) => response.data)
@@ -252,7 +291,7 @@ function ViewEvent(props) {
                     <h5
                         rows='1'
                         cols='15'
-                    >Current Attendees: {willAttendList.length + perhapsList.length}</h5>
+                    >Current Attendees: {willAttendList.length}</h5>
                     <h5
                         rows='1'
                         cols='20'
@@ -260,7 +299,7 @@ function ViewEvent(props) {
                     <h5
                         rows='1'
                         cols='10'
-                    >Guest Capacity: {permGuestCapacity == 10000 ? "None" : {permGuestCapacity}}</h5>
+                    >Guest Capacity: {guestCapacity == 10000 ? "None" : guestCapacity}</h5>
                 </div>
                 <div className='headerTing'>
                     <div className='twoButtons'>
@@ -275,7 +314,7 @@ function ViewEvent(props) {
                         </div>
 
                         <div className="inviteOnlyButton" onClick={()=>{
-                            setIsInvitePromptOpne(!setIsInvitePromptOpne)
+                            setIsInvitePromptOne(!isInvitePrompt)
                             //alert(isCapacityPromptOpen) //Should only work if user is host of event
                             }}>Invite User
                         </div>
