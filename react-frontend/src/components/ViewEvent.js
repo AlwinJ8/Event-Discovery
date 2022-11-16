@@ -3,8 +3,6 @@ import { useEffect, useState, useRef, useContext} from 'react';
 import { Context } from "./Context";
 import UserServices from '../services/UserServices';
 import { MdArrowBack } from 'react-icons/md';
-import { wait } from '@testing-library/user-event/dist/utils';
-
 
 //Use this function to remove a user from list on frontend
 // NOTE THAT "context" IS THE ID OF THE CURRENT USER!!!!!
@@ -31,15 +29,23 @@ function ViewEvent(props) {
 
     const [guestCapacity, setGuestCapacity] = useState(props.capacity); //initial cap is set at 10000
     const handleSubmit = () => {
-        setGuestCapacity(parseInt(guestCapacity));
-        UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc, isInviteOnly, guestCapacity)
+        if (context == eventHost) {
+            setGuestCapacity(parseInt(guestCapacity));
+            UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc, isInviteOnly, guestCapacity)
+        } else {
+            alert("You do not have the permissions to do this!");
+        }
     };
 
     const [inviteUser, setInviteUser] = useState(""); //initial cap is set at 10000
     const [invitedUsers, setInvitedUsers] = useState([]);
     const handleSubmit2 = () => {
-        setInvitedUsers([...invitedUsers, parseInt(inviteUser)])
-        UserServices.inviteUser(context, eventID, inviteUser);
+        if (context == eventHost) {
+            setInvitedUsers([...invitedUsers, parseInt(inviteUser)])
+            UserServices.inviteUser(context, eventID, inviteUser);
+        } else {
+            alert("You do not have the permissions to do this!");
+        }
     };
 
 
@@ -175,10 +181,8 @@ function ViewEvent(props) {
                 .then((response) => response.data)
                 .then((data) => {
                     if (!data.rsvpSuccess) {
-                        console.log("lalalala")
                         alert("You can't register for this because: " + data.reason)
                     } else {
-                        console.log("asdfasdfasdf")
                         alert("You have successfully given your rsvp.")
                         setwillAttendList(removeItem(willAttendList, context))
                         setperhapsList(removeItem(perhapsList, context))
@@ -215,10 +219,8 @@ function ViewEvent(props) {
                 .then((response) => response.data)
                 .then((data) => {
                     if (!data.rsvpSuccess) {
-                        console.log("lalalala")
                         alert("You can't register for this because: " + data.reason)
                     } else {
-                        console.log("asdfasdfasdf")
                         alert("You have successfully given your rsvp.")
                         setwillAttendList(removeItem(willAttendList, context))
                         setperhapsList(removeItem(perhapsList, context))
@@ -254,10 +256,8 @@ function ViewEvent(props) {
                 .then((response) => response.data)
                 .then((data) => {
                     if (!data.rsvpSuccess) {
-                        console.log("lalalala")
                         alert("You can't register for this because: " + data.reason)
                     } else {
-                        console.log("asdfasdfasdf")
                         alert("You have successfully given your rsvp.")
                         setwillAttendList(removeItem(willAttendList, context))
                         setperhapsList(removeItem(perhapsList, context))
@@ -277,10 +277,6 @@ function ViewEvent(props) {
         .then((data) => {
             if (data.success == true) {
                 alert("Deleted!")
-                // setwillAttendList(removeItem(willAttendList, user))
-                // setperhapsList(removeItem(perhapsList, user))
-                // setwontAttendList(removeItem(wontAttendList, user))
-                // setlolList(removeItem(lolList, user))
                 const updateAttend = willAttendList.filter((curr) =>
                     user != curr)
                 setwillAttendList(updateAttend)
@@ -325,7 +321,7 @@ function ViewEvent(props) {
                         rows='1'
                         cols='40'
                     >{eventTimeDate}</small>
-                    <small>Current Status: Will Attend</small>
+                    <small></small>
                     <div className='leftSideFooter'>
 
                     <div className="button" onClick={()=>{setOpen(!open)}}><span>Change Status</span></div>
@@ -367,7 +363,11 @@ function ViewEvent(props) {
                         </div>
 
                         <div className="inviteOnlyButton" onClick={()=>{
-                            setIsInvitePromptOne(!isInvitePrompt)
+                            if (context == props.hostid) {
+                                setIsInvitePromptOne(!isInvitePrompt)
+                            } else {
+                                alert("You do not have the permissions to do this")
+                            }
                             //alert(isCapacityPromptOpen) //Should only work if user is host of event
                             }}>Invite User
                         </div>
@@ -388,7 +388,11 @@ function ViewEvent(props) {
                             : null}
 
                         <div className="inviteOnlyButton" onClick={()=>{
-                            setIsCapacityPromptOpen(!isCapacityPromptOpen)
+                            if (context == props.hostid) {
+                                setIsCapacityPromptOpen(!isCapacityPromptOpen)
+                            } else {
+                                alert("You do not have the permissions to do this")
+                            }
                             //alert(isCapacityPromptOpen) //Should only work if user is host of event
                             }}>Set Capacity
                         </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { nanoid }  from 'nanoid'
 import '../App.css';
 import "../dashboard.css";
 import EventsList from './EventsList';
@@ -109,6 +108,7 @@ const Dashboard = () => {
             <div className="navbar">
             <div className="leftSide" >
                 <img src={Logo} />
+                <b> Hello, User {context}!</b>
             </div>
             <div className="rightSide">
                 <Link className="Logout" to="/"> Logout </Link>

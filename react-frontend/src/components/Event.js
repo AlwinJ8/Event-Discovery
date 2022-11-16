@@ -2,14 +2,12 @@ import { MdDeleteForever } from 'react-icons/md';
 import { MdEditNote } from 'react-icons/md';
 import { MdVisibility } from 'react-icons/md';
 import React from 'react';
-import { nanoid } from 'nanoid'
 import '../App.css';
 import "../dashboard.css";
 import EventsList from './EventsList';
 import { useState, useContext } from 'react';
 import EditEvent from './EditEvent';
 import EventConfirmation from './EventConfirmation';
-import Logo from "../images/GT_logo.png";
 import "../dashboardHeader.css";
 import ViewEvent from './ViewEvent';
 import { Link } from "react-router-dom";
