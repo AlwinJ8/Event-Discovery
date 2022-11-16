@@ -119,7 +119,17 @@ function ViewEvent(props) {
             if (data.hasRSVP == true) {
                 UserServices.editRsvp(context, eventID, "Will Attend")
                 alert("You are newly registered")
-                return 
+                const updatePerhaps = perhapsList.filter((curr) =>
+                    context != curr)
+                setperhapsList(updatePerhaps)
+                const updateWont = wontAttendList.filter((curr) =>
+                    context != curr)
+                setwontAttendList(updateWont)
+                const updateLol = lolList.filter((curr) =>
+                    context != curr)
+                setlolList(updateLol)
+                const newWillAttendList = [...willAttendList, context];
+                setwillAttendList(newWillAttendList)
             } else {
                 UserServices.rsvpEvent(context, eventID, "Will Attend")
                 .then((response) => response.data)
@@ -149,7 +159,17 @@ function ViewEvent(props) {
             if (data.hasRSVP == true) {
                 UserServices.editRsvp(context, eventID, "Perhaps")
                 alert("You are newly registered")
-                return 
+                const updateAttend = willAttendList.filter((curr) =>
+                    context != curr)
+                setwillAttendList(updateAttend)
+                const updateWont = wontAttendList.filter((curr) =>
+                    context != curr)
+                setwontAttendList(updateWont)
+                const updateLol = lolList.filter((curr) =>
+                    context != curr)
+                setlolList(updateLol)
+                const newPerhapsList = [...perhapsList, context];
+                setperhapsList(newPerhapsList)
             } else {
                 UserServices.rsvpEvent(context, eventID, "Perhaps")
                 .then((response) => response.data)
@@ -177,11 +197,21 @@ function ViewEvent(props) {
         .then((response) => response.data)
         .then((data) => {
             if (data.hasRSVP == true) {
-                UserServices.editRsvp(context, eventID, "Will Attend")
+                UserServices.editRsvp(context, eventID, "Won't Attend")
                 alert("You are newly registered")
-                return 
+                const updateAttend = willAttendList.filter((curr) =>
+                    context != curr)
+                setwillAttendList(updateAttend)
+                const updatePerhaps = perhapsList.filter((curr) =>
+                    context != curr)
+                setperhapsList(updatePerhaps)
+                const updateLol = lolList.filter((curr) =>
+                    context != curr)
+                setlolList(updateLol)
+                const newWontAttendList = [...wontAttendList, context];
+                setwontAttendList(newWontAttendList)
             } else {
-                UserServices.rsvpEvent(context, eventID, "Will Attend")
+                UserServices.rsvpEvent(context, eventID, "Won't Attend")
                 .then((response) => response.data)
                 .then((data) => {
                     if (!data.rsvpSuccess) {
@@ -208,7 +238,17 @@ function ViewEvent(props) {
             if (data.hasRSVP == true) {
                 UserServices.editRsvp(context, eventID, "No, lol")
                 alert("You are newly registered")
-                return 
+                const updateAttend = willAttendList.filter((curr) =>
+                    context != curr)
+                setwillAttendList(updateAttend)
+                const updatePerhaps = perhapsList.filter((curr) =>
+                    context != curr)
+                setperhapsList(updatePerhaps)
+                const updateWont = wontAttendList.filter((curr) =>
+                    context != curr)
+                setwontAttendList(updateWont)
+                const newLolList = [...lolList, context];
+                setlolList(newLolList)
             } else {
                 UserServices.rsvpEvent(context, eventID, "No, lol")
                 .then((response) => response.data)
@@ -236,10 +276,23 @@ function ViewEvent(props) {
         .then((response) => response.data)
         .then((data) => {
             if (data.success == true) {
-                setwillAttendList(removeItem(willAttendList, user))
-                setperhapsList(removeItem(perhapsList, user))
-                setwontAttendList(removeItem(wontAttendList, user))
-                setlolList(removeItem(lolList, user))
+                alert("Deleted!")
+                // setwillAttendList(removeItem(willAttendList, user))
+                // setperhapsList(removeItem(perhapsList, user))
+                // setwontAttendList(removeItem(wontAttendList, user))
+                // setlolList(removeItem(lolList, user))
+                const updateAttend = willAttendList.filter((curr) =>
+                    user != curr)
+                setwillAttendList(updateAttend)
+                const updatePerhaps = perhapsList.filter((curr) =>
+                    user != curr)
+                setperhapsList(updatePerhaps)
+                const updateWont = wontAttendList.filter((curr) =>
+                    user != curr)
+                setwontAttendList(updateWont)
+                const updateLol = lolList.filter((curr) =>
+                    user != curr)
+                setlolList(updateLol)
             } else {
                 alert("You don't have permisisons")
             }
