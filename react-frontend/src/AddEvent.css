@@ -9,8 +9,9 @@
     justify-content: center;
     align-items: center;
 }
-.popupInner {
+.poopupInner {
     background-color: #282B30;
+    max-height: 250px;
     min-height: 250px;
     min-width: 500px;
     color: white;
@@ -52,4 +53,12 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.Logout:hover {
+    text-decoration: underline;
+}
+
+.mapMode:hover {
+    text-decoration: underline;
 }

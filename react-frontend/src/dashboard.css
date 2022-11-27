@@ -8,3 +8,151 @@
     min-height: 80vh;
     background-color: white;
 }
+
+.marker-btn:hover {
+    transition: all;
+    cursor: pointer;
+    color: gold;
+}
+.selectScreen {
+    width: 30vw;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+
+.dripdown-menu.inactive{
+    visibility: hidden;
+}
+
+.dripdown-menu{
+    background-color: #857437;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-right: 230px;
+    margin-top: 170px;
+    padding-left: 2px;
+    padding-top: 5px;
+    border-radius: 5px;
+}
+
+.statuss {
+    color: black;
+    background-color: #857437;
+    width: 90px;
+    font-size: .9em;
+    font-family: 'Open Sans';
+    padding-left: 3px;
+}
+.statuss:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.filterPopup {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.86);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.filterInner {
+    background-color: #282B30;
+    min-height: 150px;
+    max-height: 150px;
+    min-width: 500px;
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.backIcon {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    color: white;
+}
+
+.backIcon:hover {
+    cursor: pointer;
+}
+
+.prompt {
+    display: flex;
+    justify-content: flex-start;
+    max-height: 30px;
+    align-items: center;
+}
+
+.butt {
+    user-select: none;
+    font-size: small;
+    font-family: 'Open Sans';
+    color: #494949;
+    text-decoration: none;
+    background: #ffffff;
+    padding: 3px;
+    border: 2px solid #494949;
+    border-radius: 3px;
+    transition: all 0.4s ease 0s;
+    max-height: 20px;
+}
+
+.butt:hover {
+    transition: all 0.4s ease 0s;
+    cursor: pointer;
+    background: #bfbfbf;
+}
+
+.filterName {
+    font-size: .8rem;
+    font-weight: bold;
+}
+
+.hostprompt {
+    max-height: 1px;
+}
+
+.applyFilter {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    max-width: 80px;
+    user-select: none;
+    font-size: small;
+    font-family: 'Open Sans';
+    color: #494949;
+    text-decoration: none;
+    background: #ffffff;
+    padding: 3px;
+    border: 2px solid #494949;
+    border-radius: 3px;
+    transition: all 0.4s ease 0s;
+    max-height: 20px;
+}
+.applyFilter:hover {
+    transition: all 0.4s ease 0s;
+    cursor: pointer;
+    background: #bfbfbf;
+}
+
+.doom {
+    display: flex;
+    align-items: center;
+}
+
+.locLink{
+    padding-left: 10px;
+    margin-top: 10px;
+    color: white;
+    font-size: .8em;
+    font-weight: bold;
+}
