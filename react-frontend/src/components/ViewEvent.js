@@ -29,7 +29,7 @@ function ViewEvent(props) {
 
     const [guestCapacity, setGuestCapacity] = useState(props.capacity); //initial cap is set at 10000
     const handleSubmit = () => {
-        if (context == eventHost) {
+        if (context == props.hostid) {
             setGuestCapacity(parseInt(guestCapacity));
             UserServices.editEvent(context, props.id, eventName, eventLoc, eventTimeDate, eventDesc, isInviteOnly, guestCapacity)
         } else {
@@ -40,7 +40,7 @@ function ViewEvent(props) {
     const [inviteUser, setInviteUser] = useState(""); //initial cap is set at 10000
     const [invitedUsers, setInvitedUsers] = useState([]);
     const handleSubmit2 = () => {
-        if (context == eventHost) {
+        if (context == props.hostid) {
             setInvitedUsers([...invitedUsers, parseInt(inviteUser)])
             UserServices.inviteUser(context, eventID, inviteUser);
         } else {
