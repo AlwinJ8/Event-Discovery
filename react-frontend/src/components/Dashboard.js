@@ -58,6 +58,7 @@ const Dashboard = () => {
     "Boggs" : [33.775608, -84.399844],
     "Brittain Dining Hall(ew)" : [33.772411, -84.391273]}
 
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [filterList, setFilterList] = useState([]);
     const [context, setContext] = useContext(Context);
@@ -245,6 +246,7 @@ const Dashboard = () => {
 
     const handleExitClick = () => {
         setOpen(false)
+        setIsOpen(false)
     }
 
     return <div className = "dashboard">
@@ -258,7 +260,7 @@ const Dashboard = () => {
                 <Link className="createline" onClick={() => setEventPopup(true)}> Create Event </Link>
                 <Link className="filterline" onClick={()=>{setOpen(!open)}}><span>Change Filters</span></Link>
                 <Link className='mapMode' onClick={() => setMapMode(!mapMode)}> Toggle Map </Link>
-
+                <Link className='mapMode' onClick={() => setIsOpen(!isOpen)}> View My Events </Link>
             </div>
             </div>
             <AddEvent trigger={setEventPopup} isShown={addEventPopup} handleAddEvent={addEvent}/>
@@ -402,6 +404,40 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div> : null}
+
+            {isOpen ?
+            <div className='myEventPopup'>
+                <MdArrowBack className = "backIcon" size = '2rem' onClick={handleExitClick}/>
+                <div className="myEventInner">
+                    <div className='upperBox'>
+                        <div className = "eventHeader">
+                            <h5 className='h5'
+                                rows='1'
+                                cols='20'
+                            >My Events</h5>
+                            <Link
+                                className='conflictsLink'
+                                onClick={() =>
+                                alert("Current Time Conflicts:\n")
+                                //GEORGE WILL FINISH THE ALERT, you need to create a list that at each index, contains the pair of events that have a time conflict
+                                }> View Time Conflicts</Link>
+                        </div>
+                    </div>
+                    <text className='myEventsList'>{events.map((event) => (//events will be replaced by myEvents, a list that contains all events user has RSVP'd
+                            <div className='myEventsListCell'>
+                                <small className='thing1'>
+                                {event.eventName} @ {event.location}
+                                </small>
+                                <small className='thing2'>
+                                {event.timeAndDate}
+                                </small>
+                            </div>
+                        ))}
+                    </text>
+
+                </div>
+            </div> : null}
+
         </div>;
 };
 
