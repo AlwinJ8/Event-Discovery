@@ -15,5 +15,7 @@ public interface UserEventRepository extends JpaRepository<UserEvent, Long> {
 
     List<UserEvent> findByEventAndStatus(Event event, String status);
 
+    List<UserEvent> findByUser(User user);
+
     UserEvent findByUserAndEvent(User user, Event event);
 }

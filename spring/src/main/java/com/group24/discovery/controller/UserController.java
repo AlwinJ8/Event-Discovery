@@ -357,6 +357,38 @@ public class UserController {
         return new ResponseEntity<>(temp, headers, HttpStatus.OK);
     }
 
+    /*
+     * Gets all events that current user is RSVP'd to. Pass in userID as header "CurrentID". Returns information in same format as the GET "/events" endpoint.
+     */
+    @GetMapping("/events/attending")
+    public ResponseEntity<List<Object>> getUserEventsAttending(@RequestHeader("CurrentID") String currID) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("CurrentID", currID);
+        User user = userRepository.findById(Long.parseLong(currID)).get();
+
+        List<UserEvent> userEvents = userEventRepository.findByUser(user);
+        List<Object> response = new ArrayList<>();
+
+        for (UserEvent curr : userEvents) {
+            Event e = eventRepository.findById(curr.getEvent().getId()).get();
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("id", e.getId());
+            temp.put("name", e.getName());
+            temp.put("hostid", e.getHost().getID());
+            temp.put("location", e.getLocation());
+            temp.put("date", e.getDate());
+            temp.put("description", e.getDescription());
+            temp.put("host", e.getHost().getName());
+            temp.put("capacity", e.getCapacity());
+            temp.put("currentAttendance", this.getCurrentAttendance(e));
+            temp.put("inviteOnly", e.isInviteOnly());
+            response.add(temp);
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+
+    }
+
     
     // Returns current attendance of event (number of people with "Will Attend" status)
     public int getCurrentAttendance(Event event) {
