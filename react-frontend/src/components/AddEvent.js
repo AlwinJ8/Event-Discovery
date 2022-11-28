@@ -44,7 +44,7 @@ function AddEvent(props) {
 
     return (props.isShown) ? (
         <div className="popup">
-            <div className='popupInner'>
+            <div className='poopupInner'>
                 <div className = "eventHeader">
                     <textarea
                         rows='1'
