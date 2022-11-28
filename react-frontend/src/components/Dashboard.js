@@ -150,6 +150,9 @@ const Dashboard = () => {
         } else{
             setFilterList(events)
         }
+        setFilteredLocations([])
+        setFilteredDates([])
+        setFilteredHosts([])
         setIsFiltered(true)
     };
     const handleClearFilters = () => {
@@ -276,11 +279,11 @@ const Dashboard = () => {
                                     zoom: 16
                                 }}
                                 mapStyle="mapbox://styles/mapbox/streets-v9" >
-                                {events.map(event => ( //Hmmmmmm
+                                {(isFiltered? filterList : events).map(event => ( //Hmmmmmm
                                     <div>
                                         <Marker
-                                            latitude={locationToCoords[event.location[0]]}//locationToCoord[event.location[0]]
-                                            longitude={locationToCoords[event.location[1]]}>
+                                            latitude={33.775279}//event.location[0]//event.location[1]
+                                            longitude={-84.396769}>
                                             <GiPositionMarker
                                             size = '2.25em'
                                             className="marker-btn"
