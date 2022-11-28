@@ -59,6 +59,7 @@ const Dashboard = () => {
     "Brittain Dining Hall(ew)" : [33.772411, -84.391273]}
 
     const navigate = useNavigate();
+    const [filterList, setFilterList] = useState([]);
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
@@ -96,9 +97,11 @@ const Dashboard = () => {
             alert("Enter Valid Location!")
         }
     };
-    const [filterList, setFilterList] = useState([]);
     const currentFilteredPosts = filterList.slice(firstPostIndex, lastPostIndex);
     const handleApplyFilters = () => {
+        if (isFiltered) {
+            alert("Must clear previous filters first")
+        } else {
         setFilterList([])
         const set1 = new Set(filteredLocations)
         const set2 = new Set(filteredDates)
@@ -128,10 +131,9 @@ const Dashboard = () => {
                 }
             }
         } else if (set1.size > 0) {
+            console.log(set1)
             for (let i = 0; i < events.length; i++) {
-                console.log("hm?")
                 if (set1.has(events[i].location)) {
-                    console.log("yes?")
                     setFilterList([...filterList, events[i]])
                 }
             }
@@ -150,10 +152,8 @@ const Dashboard = () => {
         } else{
             setFilterList(events)
         }
-        setFilteredLocations([])
-        setFilteredDates([])
-        setFilteredHosts([])
         setIsFiltered(true)
+    }
     };
     const handleClearFilters = () => {
         setFilterList([])
@@ -254,7 +254,6 @@ const Dashboard = () => {
                 <b> Hello, User {context}!</b>
             </div>
             <div className="rightSide">
-                <small>{isFiltered ? "filterList" : "normlist"}</small>
                 <Link className="Logout" to="/"> Logout </Link>
                 <Link className="createline" onClick={() => setEventPopup(true)}> Create Event </Link>
                 <Link className="filterline" onClick={()=>{setOpen(!open)}}><span>Change Filters</span></Link>
@@ -282,8 +281,8 @@ const Dashboard = () => {
                                 {(isFiltered? filterList : events).map(event => ( //Hmmmmmm
                                     <div>
                                         <Marker
-                                            latitude={33.775279}//event.location[0]//event.location[1]
-                                            longitude={-84.396769}>
+                                            latitude={locationToCoords[event.location][0]}//event.location[0]//event.location[1]
+                                            longitude={locationToCoords[event.location][1]}>
                                             <GiPositionMarker
                                             size = '2.25em'
                                             className="marker-btn"
