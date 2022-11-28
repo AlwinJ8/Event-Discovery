@@ -58,7 +58,9 @@ const Dashboard = () => {
     "Boggs" : [33.775608, -84.399844],
     "Brittain Dining Hall(ew)" : [33.772411, -84.391273]}
 
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const [filterList, setFilterList] = useState([]);
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
@@ -96,9 +98,11 @@ const Dashboard = () => {
             alert("Enter Valid Location!")
         }
     };
-    const [filterList, setFilterList] = useState([]);
     const currentFilteredPosts = filterList.slice(firstPostIndex, lastPostIndex);
     const handleApplyFilters = () => {
+        if (isFiltered) {
+            alert("Must clear previous filters first")
+        } else {
         setFilterList([])
         const set1 = new Set(filteredLocations)
         const set2 = new Set(filteredDates)
@@ -128,10 +132,9 @@ const Dashboard = () => {
                 }
             }
         } else if (set1.size > 0) {
+            console.log(set1)
             for (let i = 0; i < events.length; i++) {
-                console.log("hm?")
                 if (set1.has(events[i].location)) {
-                    console.log("yes?")
                     setFilterList([...filterList, events[i]])
                 }
             }
@@ -151,6 +154,7 @@ const Dashboard = () => {
             setFilterList(events)
         }
         setIsFiltered(true)
+    }
     };
     const handleClearFilters = () => {
         setFilterList([])
@@ -242,6 +246,7 @@ const Dashboard = () => {
 
     const handleExitClick = () => {
         setOpen(false)
+        setIsOpen(false)
     }
 
     return <div className = "dashboard">
@@ -251,12 +256,11 @@ const Dashboard = () => {
                 <b> Hello, User {context}!</b>
             </div>
             <div className="rightSide">
-                <small>{isFiltered ? "filterList" : "normlist"}</small>
                 <Link className="Logout" to="/"> Logout </Link>
                 <Link className="createline" onClick={() => setEventPopup(true)}> Create Event </Link>
                 <Link className="filterline" onClick={()=>{setOpen(!open)}}><span>Change Filters</span></Link>
                 <Link className='mapMode' onClick={() => setMapMode(!mapMode)}> Toggle Map </Link>
-
+                <Link className='mapMode' onClick={() => setIsOpen(!isOpen)}> View My Events </Link>
             </div>
             </div>
             <AddEvent trigger={setEventPopup} isShown={addEventPopup} handleAddEvent={addEvent}/>
@@ -276,11 +280,11 @@ const Dashboard = () => {
                                     zoom: 16
                                 }}
                                 mapStyle="mapbox://styles/mapbox/streets-v9" >
-                                {events.map(event => ( //Hmmmmmm
+                                {(isFiltered? filterList : events).map(event => ( //Hmmmmmm
                                     <div>
                                         <Marker
-                                            latitude={locationToCoords[event.location[0]]}//locationToCoord[event.location[0]]
-                                            longitude={locationToCoords[event.location[1]]}>
+                                            latitude={locationToCoords[event.location][0]}//event.location[0]//event.location[1]
+                                            longitude={locationToCoords[event.location][1]}>
                                             <GiPositionMarker
                                             size = '2.25em'
                                             className="marker-btn"
@@ -400,6 +404,40 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div> : null}
+
+            {isOpen ?
+            <div className='myEventPopup'>
+                <MdArrowBack className = "backIcon" size = '2rem' onClick={handleExitClick}/>
+                <div className="myEventInner">
+                    <div className='upperBox'>
+                        <div className = "eventHeader">
+                            <h5 className='h5'
+                                rows='1'
+                                cols='20'
+                            >My Events</h5>
+                            <Link
+                                className='conflictsLink'
+                                onClick={() =>
+                                alert("Current Time Conflicts:\n")
+                                //GEORGE WILL FINISH THE ALERT, you need to create a list that at each index, contains the pair of events that have a time conflict
+                                }> View Time Conflicts</Link>
+                        </div>
+                    </div>
+                    <text className='myEventsList'>{events.map((event) => (//events will be replaced by myEvents, a list that contains all events user has RSVP'd
+                            <div className='myEventsListCell'>
+                                <small className='thing1'>
+                                {event.eventName} @ {event.location}
+                                </small>
+                                <small className='thing2'>
+                                {event.timeAndDate}
+                                </small>
+                            </div>
+                        ))}
+                    </text>
+
+                </div>
+            </div> : null}
+
         </div>;
 };
 

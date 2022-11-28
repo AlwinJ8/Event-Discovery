@@ -62,3 +62,27 @@ textarea:focus {
 .mapMode:hover {
     text-decoration: underline;
 }
+
+.minihead {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boom {
+    font-size: .8em;
+    font-weight: bold;
+}
+
+.locLinker{
+    padding-left: 10px;
+    color: white;
+    font-size: .8em;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.locLinker:hover{
+    cursor: pointer;
+}
+
