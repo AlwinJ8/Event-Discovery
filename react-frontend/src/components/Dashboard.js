@@ -22,6 +22,11 @@ import Map, {
     GeolocateControl,
 } from "react-map-gl";
 
+function getRandomFloat(min, max, decimals) {
+    const str = (Math.random() * (max - min) + min).toFixed(decimals);
+    return parseFloat(str);
+}
+
 const Dashboard = () => {
     // Contains Valid Locations to be inputted
     const locationToCoords =
@@ -283,8 +288,8 @@ const Dashboard = () => {
                                 {(isFiltered? filterList : events).map(event => ( //Hmmmmmm
                                     <div>
                                         <Marker
-                                            latitude={locationToCoords[event.location][0]}
-                                            longitude={locationToCoords[event.location][1]}>
+                                            latitude={getRandomFloat(locationToCoords[event.location][0] - .00015, locationToCoords[event.location][0] + .00015, 6)}
+                                            longitude={getRandomFloat(locationToCoords[event.location][1] - .00015, locationToCoords[event.location][1] + .00015, 6)}>
                                             <GiPositionMarker
                                             size = '2.25em'
                                             className="marker-btn"
