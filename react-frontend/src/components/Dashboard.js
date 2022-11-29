@@ -88,6 +88,7 @@ const Dashboard = () => {
         setFilteredDates([...filteredDates, (dateFilter)])
 
     };
+    const repeats = new Set();
     const [locationFilter, setLocationFilter] = useState("");
     const [filteredLocations, setFilteredLocations] = useState([]);
     const handleSubmitLocation = () => {
@@ -102,51 +103,51 @@ const Dashboard = () => {
         if (isFiltered) {
             alert("Must clear previous filters first")
         } else {
-        setFilterList([])
         const set1 = new Set(filteredLocations)
         const set2 = new Set(filteredDates)
         const set3 = new Set(filteredHosts)
         if (set1.size > 0 && set2.size > 0 && set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location) && set2.has(events[i].timeAndDate) && set3.has(events[i].hostid)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
             }
         } else if (set1.size > 0 && set2.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location) && set2.has(events[i].timeAndDate)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
             }
         } else if (set1.size > 0 && set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location) && set3.has(events[i].hostid)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
             }
         } else if (set2.size > 0 && set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set2.has(events[i].timeAndDate) && set3.has(events[i].hostid)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
             }
         } else if (set1.size > 0) {
             console.log(set1)
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
+                console.log(filterList)
             }
         } else if (set2.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set2.has(events[i].timeAndDate)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
             }
         } else if (set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set3.has(events[i].hostid)) {
-                    setFilterList([...filterList, events[i]])
+                    filterList.push(events[i])
                 }
             }
         } else{
@@ -282,7 +283,7 @@ const Dashboard = () => {
                                 {(isFiltered? filterList : events).map(event => ( //Hmmmmmm
                                     <div>
                                         <Marker
-                                            latitude={locationToCoords[event.location][0]}//event.location[0]//event.location[1]
+                                            latitude={locationToCoords[event.location][0]}
                                             longitude={locationToCoords[event.location][1]}>
                                             <GiPositionMarker
                                             size = '2.25em'
