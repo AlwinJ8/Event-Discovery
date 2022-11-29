@@ -389,6 +389,36 @@ public class UserController {
 
     }
 
+    /*
+     * Get all conflicting events for a user. Pass user through CurrentID header. Returns infomation in same format as the GET "/events" endpoint.
+     */
+    @GetMapping("/events/conflicts")
+    public ResponseEntity<List<Object>> getUserConflicts(@RequestHeader("CurrentID") String currID) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("CurrentID", currID);
+
+        List<UserEvent> userEvents = userEventRepository.getConflictsByUser(Long.parseLong(currID));
+        List<Object> response = new ArrayList<>();
+
+        for (UserEvent conflict : userEvents) {
+            Event e = eventRepository.findById(conflict.getEvent().getId()).get();
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("id", e.getId());
+            temp.put("name", e.getName());
+            temp.put("hostid", e.getHost().getID());
+            temp.put("location", e.getLocation());
+            temp.put("date", e.getDate());
+            temp.put("description", e.getDescription());
+            temp.put("host", e.getHost().getName());
+            temp.put("capacity", e.getCapacity());
+            temp.put("currentAttendance", this.getCurrentAttendance(e));
+            temp.put("inviteOnly", e.isInviteOnly());
+            response.add(temp);
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
     
     // Returns current attendance of event (number of people with "Will Attend" status)
     public int getCurrentAttendance(Event event) {

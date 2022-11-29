@@ -1,9 +1,9 @@
-import React, {useState}  from 'react';
+import React, { useState }  from 'react';
 import '../InitialConfig.css';
 import Logo from "../images/GT_logo.png";
-import {Route, Router, useLocation, useNavigate, useParams} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useContext } from 'react';
-import {Context} from './Context';
+import { Context } from './Context';
 import UserServices from '../services/UserServices';
 
 function InitialConfig() {
