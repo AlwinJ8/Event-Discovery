@@ -84,12 +84,10 @@ const Dashboard = () => {
     const [filteredHosts, setFilteredHosts] = useState([]);
     const handleSubmitHost = () => {
         setFilteredHosts([...filteredHosts, parseInt(hostFilter)])
-        console.log(filteredHosts)
     };
     const [dateFilter, setDateFilter] = useState("");
     const [filteredDates, setFilteredDates] = useState([]);
     const handleSubmitDate = () => {
-        console.log(filterList)
         setFilteredDates([...filteredDates, (dateFilter)])
 
     };
@@ -141,7 +139,6 @@ const Dashboard = () => {
                 if (set1.has(events[i].location)) {
                     filterList.push(events[i])
                 }
-                console.log(filterList)
             }
         } else if (set2.size > 0) {
             for (let i = 0; i < events.length; i++) {
