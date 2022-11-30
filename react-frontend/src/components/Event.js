@@ -18,7 +18,7 @@ import { render } from '@testing-library/react';
 const Event = ({ id, host, hostid, eventName, location, description, timeAndDate, capacity, inviteOnly, handleDeleteEvent }) => {
     const [context, setContext] = useContext(Context);
     const [editEventPopup, setEventPopup] = useState(false);
-    const [eventViewPopup, setEventViewPopup] = useState(false);
+    const [eventViewPopup, setEventViewPopup] = useState(null);
     const [editConfirmationPopup, setEditConfirmationPopup] = useState(false);
 
     const [desc, setDesc] = useState(description);
@@ -65,7 +65,7 @@ const Event = ({ id, host, hostid, eventName, location, description, timeAndDate
                 <div className = "eventFooter">
                     <small>   {timeDate} </small>
                     <div className='icons'>
-                        <MdVisibility className = "editIcon" onClick={() => setEventViewPopup(true)} size = '1.3em'/>
+                        <MdVisibility className = "editIcon" onClick={() => setEventViewPopup(eventName)} size = '1.3em'/>
                         <MdEditNote onClick={() => setEventPopup(true)} className = "editIcon" size = '1.5em'/>
                         <MdDeleteForever onClick={() => handleDeleteEvent(id)} className='deleteIcon' size='1.5em'/>
                     </div>

@@ -53,7 +53,7 @@ function ViewEvent(props) {
     const [isInvitePrompt, setIsInvitePromptOne] = useState(false)
 
     const handleExitClick = () => {
-        props.trigger(false);
+        props.trigger(null);
     }
 
     //This is lists storing different attendance statuses

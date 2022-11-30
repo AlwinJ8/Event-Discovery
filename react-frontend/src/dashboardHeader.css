@@ -41,6 +41,18 @@
     text-decoration: underline;
 }
 
+.navbar .myEvents:hover{
+    text-decoration: underline;
+}
+
+.navbar .timeConflicts:hover{
+    text-decoration: underline;
+}
+
+.navbar .allEvents:hover{
+    text-decoration: underline;
+}
+
 .navbar a {
     color: black;
     text-decoration: none;

@@ -9,8 +9,9 @@
     justify-content: center;
     align-items: center;
 }
-.popupInner {
+.poopupInner {
     background-color: #282B30;
+    max-height: 250px;
     min-height: 250px;
     min-width: 500px;
     color: white;
@@ -53,3 +54,35 @@ textarea:focus {
     align-items: center;
     justify-content: space-between;
 }
+
+.Logout:hover {
+    text-decoration: underline;
+}
+
+.mapMode:hover {
+    text-decoration: underline;
+}
+
+.minihead {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boom {
+    font-size: .8em;
+    font-weight: bold;
+}
+
+.locLinker{
+    padding-left: 10px;
+    color: white;
+    font-size: .8em;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.locLinker:hover{
+    cursor: pointer;
+}
+

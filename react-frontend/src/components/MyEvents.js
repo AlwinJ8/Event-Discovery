@@ -14,18 +14,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import ViewEvent from './ViewEvent';
 import { GiPositionMarker } from "react-icons/gi";
 import { MdArrowBack } from 'react-icons/md';
-import Map, {
-    Marker,
-    NavigationControl,
-    Popup,
-    FullscreenControl,
-    GeolocateControl,
-} from "react-map-gl";
-
-function getRandomFloat(min, max, decimals) {
-    const str = (Math.random() * (max - min) + min).toFixed(decimals);
-    return parseFloat(str);
-}
+import Map, { Marker } from "react-map-gl";
 
 const Dashboard = () => {
     // Contains Valid Locations to be inputted
@@ -62,12 +51,13 @@ const Dashboard = () => {
     "Boggs" : [33.775608, -84.399844],
     "Brittain Dining Hall(ew)" : [33.772411, -84.391273]}
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [conflictsOpen, setConflictsOpen] = useState(false);
     const navigate = useNavigate();
     const [filterList, setFilterList] = useState([]);
     const [context, setContext] = useContext(Context);
     const [addEventPopup, setEventPopup] = useState(false);
     const [events, setEvents] = useState([]);
+    const [conflicts, setConflicts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(12);
     const lastPostIndex = currentPage * postsPerPage;
@@ -84,14 +74,15 @@ const Dashboard = () => {
     const [filteredHosts, setFilteredHosts] = useState([]);
     const handleSubmitHost = () => {
         setFilteredHosts([...filteredHosts, parseInt(hostFilter)])
+        console.log(filteredHosts)
     };
     const [dateFilter, setDateFilter] = useState("");
     const [filteredDates, setFilteredDates] = useState([]);
     const handleSubmitDate = () => {
+        console.log(filterList)
         setFilteredDates([...filteredDates, (dateFilter)])
 
     };
-    const repeats = new Set();
     const [locationFilter, setLocationFilter] = useState("");
     const [filteredLocations, setFilteredLocations] = useState([]);
     const handleSubmitLocation = () => {
@@ -106,50 +97,51 @@ const Dashboard = () => {
         if (isFiltered) {
             alert("Must clear previous filters first")
         } else {
+        setFilterList([])
         const set1 = new Set(filteredLocations)
         const set2 = new Set(filteredDates)
         const set3 = new Set(filteredHosts)
         if (set1.size > 0 && set2.size > 0 && set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location) && set2.has(events[i].timeAndDate) && set3.has(events[i].hostid)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else if (set1.size > 0 && set2.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location) && set2.has(events[i].timeAndDate)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else if (set1.size > 0 && set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location) && set3.has(events[i].hostid)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else if (set2.size > 0 && set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set2.has(events[i].timeAndDate) && set3.has(events[i].hostid)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else if (set1.size > 0) {
             console.log(set1)
             for (let i = 0; i < events.length; i++) {
                 if (set1.has(events[i].location)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else if (set2.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set2.has(events[i].timeAndDate)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else if (set3.size > 0) {
             for (let i = 0; i < events.length; i++) {
                 if (set3.has(events[i].hostid)) {
-                    filterList.push(events[i])
+                    setFilterList([...filterList, events[i]])
                 }
             }
         } else{
@@ -169,10 +161,12 @@ const Dashboard = () => {
 
     useEffect(() => {
         getEvents();
+        getConflicts();
     }, []);
 
     const getEvents = () => {
-        UserServices.showEvents(context)
+        // Get only events user is RSVP'd to
+        UserServices.getRsvpEvents(context)
         .then((response) => response.data)
         .then((data) => {
             for (const entry of data) {
@@ -185,30 +179,29 @@ const Dashboard = () => {
                 const timeAndDate = entry.date
                 const capacity = entry.capacity
                 const inviteOnly = entry.inviteOnly
-                //console.log(newEvent)
-                //console.log(id)
-                //console.log(eventName)
-                //console.log(loc)
-                //console.log(desc)
-                //console.log(timeAndDate)
-                //newEvents = [...events, newEvent];
                 setEvents((events) => [...events, {id: id, host: host, hostid: hostid, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate, capacity: capacity, inviteOnly: inviteOnly}])
             }
         });
     }
-
-
-    /*const edit = (newEvent) => {
-        const newEvents = [...events, newEvent];
-        // let nEvents = []
-        // if (events.length != 0) {
-        //     for (let i = 0; i < events.length - 1; i++) {
-        //         nEvents[i] = events[i]
-        //     }
-        // }
-        console.log("hi")
-        setEvents(newEvents);
-    }*/
+    
+    const getConflicts = () => {
+        UserServices.getConflicts(context)
+        .then((response) => response.data)
+        .then((data) => {
+            for (const entry of data) {
+                const id = entry.id
+                const host = entry.host
+                const hostid = entry.hostid
+                const eventName = entry.name
+                const loc = entry.location
+                const desc = entry.description
+                const timeAndDate = entry.date
+                const capacity = entry.capacity
+                const inviteOnly = entry.inviteOnly
+                setConflicts((events) => [...events, {id: id, host: host, hostid: hostid, eventName: eventName, location: loc, description: desc, timeAndDate: timeAndDate, capacity: capacity, inviteOnly: inviteOnly}])
+            }
+        });
+    }
 
     const addEvent = (name, loc, desc, timeDate) => {
         UserServices.addEvent(context, name, loc, timeDate, desc, false, 2330)
@@ -248,21 +241,21 @@ const Dashboard = () => {
 
     const handleExitClick = () => {
         setOpen(false)
-        setIsOpen(false)
+        setConflictsOpen(false)
     }
 
     return <div className = "dashboard">
             <div className="navbar">
             <div className="leftSide" >
                 <img src={Logo} />
-                <b> Hello, User {context}!</b>
+                <b> Events for User {context}</b>
             </div>
             <div className="rightSide">
                 <Link className="Logout" to="/"> Logout </Link>
-                <Link className="createline" onClick={() => setEventPopup(true)}> Create Event </Link>
+                <Link className="timeConflicts" onClick={() => setConflictsOpen(true)}> View Time Conflicts </Link>
                 <Link className="filterline" onClick={()=>{setOpen(!open)}}><span>Change Filters</span></Link>
                 <Link className='mapMode' onClick={() => setMapMode(!mapMode)}> Toggle Map </Link>
-                <Link className='myEvents' to="/my-events"> View My Events </Link>
+                <Link className='allEvents' to="/dashboard"> View All Events </Link>
             </div>
             </div>
             <AddEvent trigger={setEventPopup} isShown={addEventPopup} handleAddEvent={addEvent}/>
@@ -282,11 +275,11 @@ const Dashboard = () => {
                                     zoom: 16
                                 }}
                                 mapStyle="mapbox://styles/mapbox/streets-v9" >
-                                {(isFiltered? filterList : events).map(event => ( //Hmmmmmm
+                                {(isFiltered? filterList : events).map(event => (
                                     <div>
                                         <Marker
-                                            latitude={getRandomFloat(locationToCoords[event.location][0] - .00015, locationToCoords[event.location][0] + .00015, 6)}
-                                            longitude={getRandomFloat(locationToCoords[event.location][1] - .00015, locationToCoords[event.location][1] + .00015, 6)}>
+                                            latitude={locationToCoords[event.location][0]}
+                                            longitude={locationToCoords[event.location][1]}>
                                             <GiPositionMarker
                                             size = '2.25em'
                                             className="marker-btn"
@@ -406,6 +399,34 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div> : null}
+
+            {conflictsOpen ?
+            <div className='myEventPopup'> 
+                <MdArrowBack className = "backIcon" size = '2rem' onClick={handleExitClick}/>
+                <div className="myEventInner">
+                    <div className='upperBox'>
+                        <div className = "eventHeader">
+                            <h5 className='h5'
+                                rows='1'
+                                cols='20'
+                            > Time Conflicts </h5>
+                        </div>
+                    </div>
+                    <text className='myEventsList'>{conflicts.map((event) => (
+                            <div className='myEventsListCell'>
+                                <small className='thing1'>
+                                {event.eventName} @ {event.location}
+                                </small>
+                                <small className='thing2'>
+                                {event.timeAndDate}
+                                </small>
+                            </div>
+                        ))}
+                    </text>
+
+                </div>
+            </div> : null}
+
         </div>;
 };
 

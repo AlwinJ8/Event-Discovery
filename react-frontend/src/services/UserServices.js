@@ -62,6 +62,16 @@ class UserServices {
         const headers = {"CurrentID": userID};
         return axios.post(USER_API_URL + "/events/invite/" + eventID + "/" + invitedID, {}, {headers: {"CurrentID": userID}})
     }
+
+    getRsvpEvents(userID) {
+        const headers = {"CurrentID": userID};
+        return axios.get(USER_API_URL + "/events/attending/", {headers: headers});
+    }
+
+    getConflicts(userID) {
+        const headers = {"CurrentID": userID};
+        return axios.get(USER_API_URL + "/events/conflicts/", {headers: headers});
+    }
 }
 
 export default new UserServices()
